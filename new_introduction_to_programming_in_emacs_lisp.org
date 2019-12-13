@@ -1,9 +1,5 @@
 * Copyright notice:
-<<<<<<< HEAD
-Copyright 2017 Jean-Christophe Helary
-=======
 Copyright 2017-2019, Jean-Christophe HELARY
->>>>>>> master
 * License notice:
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -1130,20 +1126,6 @@ And we can use anything as the second argument:
 
 *** Assigning functions to your symbols
 * ===================================================================
-<<<<<<< HEAD
-* 2e essai, copié sur ANSI Common Lisp
-
-: > 1
-:  1 (#o1, #x1, ?\C-a)
-
-  => 1 is equivalent to octal/hexadecimal/character C-a
-
-: > (+ 2 3)
-:  5 (#o5, #x5, ?\C-e)
-
-  => + is the operator, 2 and 3 are the arguments
-=======
->>>>>>> master
 * GNU Free Documentation License
                 GNU Free Documentation License
                  Version 1.3, 3 November 2008
@@ -1617,8 +1599,6 @@ définition formelle en 12.4
 ** TODO définir ses variables
 ** TODO différence entre A et ?A
 ** Introduction à emacs lisp par Aaron Bieber
-<<<<<<< HEAD
-=======
 * 2e essai, copié sur ANSI Common Lisp
 
 : > 1
@@ -1630,4 +1610,3 @@ définition formelle en 12.4
 :  5 (#o5, #x5, ?\C-e)
 
   => + is the operator, 2 and 3 are the arguments
->>>>>>> master
