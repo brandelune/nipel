@@ -55,15 +55,15 @@ paragraph and hit C-x C-e as I just wrote. You'll see an error message
 appear in the bottom half of the window. Depending on where the cursor
 was the message will differ but it should look like:
 
-====================================================
-Debugger entered--Lisp error: (void-variable cursor)
-  eval(cursor nil)
-  elisp--eval-last-sexp(nil)
-  eval-last-sexp(nil)
-  funcall-interactively(eval-last-sexp nil)
-  call-interactively(eval-last-sexp nil nil)
-  command-execute(eval-last-sexp)
-====================================================
+: ====================================================
+: Debugger entered--Lisp error: (void-variable cursor)
+:  eval(cursor nil)
+:  elisp--eval-last-sexp(nil)
+:  eval-last-sexp(nil)
+:  funcall-interactively(eval-last-sexp nil)
+:  call-interactively(eval-last-sexp nil nil)
+:  command-execute(eval-last-sexp)
+: ====================================================
 
 Don't worry about what that means, just dismiss the message right away
 by hitting *q*.
@@ -80,7 +80,7 @@ You can try that right away. Put the cursor after the right
 parenthesis, anywhere on the line where the expression (+ 2 3) is
 written below:
 
-(+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
+: (+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
 
 And hit C-x C-e the way I indicated above. You should see something
 appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
@@ -171,13 +171,13 @@ still help us learn elisp.
 **** Numbers (atom)
 At the ielm prompt, type 65 followed by Enter:
 
- ELISP> 65
+: ELISP> 65
 
 The result should be displayed immediately under the prompt line:
 
- ELISP> 65
- 65 (#o101, #x41, ?A)
- ELISP> _  <- the cursor is back in position, waiting for some input
+: ELISP> 65
+: 65 (#o101, #x41, ?A)
+: ELISP> _  <- the cursor is back in position, waiting for some input
 
 What you did is type an *expression* at the prompt, you had Emacs read
 it by hitting Enter, then Emacs evaluated it, printed the evaluation
@@ -188,9 +188,9 @@ expression (that's commonly called a Read-Evaluate-Print Loop:
 You entered 65, and Emacs evaluated that to the value 65 along with
 the other things between parenthesis that are:
 
- #o101 = 65 in octal
- #x41 = 65 in hexadecimal
- ?A = the character A (surprisingly)
+: #o101 = 65 in octal
+: #x41 = 65 in hexadecimal
+: ?A = the character A (surprisingly)
 
 The first 65 is 65 in "decimal", the way numbers are counted the most
 commonly by human being. Emacs supports octal and hexadecimal ways of
@@ -210,22 +210,22 @@ is called A".
 
 All the returned values are equivalent:
 
- ELISP> #o101
- 65 (#o101, #x41, ?A)
+: ELISP> #o101
+: 65 (#o101, #x41, ?A)
 
- ELISP> #x41
- 65 (#o101, #x41, ?A)
+: ELISP> #x41
+: 65 (#o101, #x41, ?A)
 
- ELISP> ?A
- 65 (#o101, #x41, ?A)
+: ELISP> ?A
+: 65 (#o101, #x41, ?A)
 
 Try to enter other numerical values and see what you get. For example:
 
- ELISP> -10.3
- -10.3
+: ELISP> -10.3
+: -10.3
 
- ELISP> 10e3
- 10000.0
+: ELISP> 10e3
+: 10000.0
 
 Elisp evaluates integers and floating numbers as integers and floating
 numbers. We'll be able to use that later to do some arithmetic.
@@ -235,8 +235,8 @@ numbers. We'll be able to use that later to do some arithmetic.
 **** Symbols (atom)
 We've just seen how numbers were evaluated. What about letters ?
 
- ELISP> rose
- *** Eval error ***  Symbol's value as variable is void: rose
+: ELISP> rose
+: *** Eval error ***  Symbol's value as variable is void: rose
 
 Emacs displays an evaluation error message. By reading it, you can see
 that Emacs considered our input as a *symbol*. It interpreted the symbol
@@ -250,16 +250,16 @@ evaluation and displays an error message.
 
 There are times when we want to use a symbol but we don't want Emacs to evaluate it right away, becauce its value is not yet set for exemple. For this we *quote* it by preceeding it with an apostrophe.
 
- ELISP> 'rose
- rose
+: ELISP> 'rose
+: rose
 
 Here, Emacs sees that we put the apostrophe before the symbol so it
 won't try to evaluate it and it evaluates the expression as the symbol itself.
 
 Symbols can be non-conventional words. Let's see a symbol that is actually associated to a variable that holds a value:
 
- ELISP> fill-column
- 70 (#o106, #x46, ?F)
+: ELISP> fill-column
+: 70 (#o106, #x46, ?F)
 
 We're seeing a word that evaluates to a number... This "fill-column"
 symbol is a *variable* that actually holds the value 70. "fill-column" is defined within Emacs as the "Column beyond which automatic line-wrapping should happen." (quoted from C-h v fill-column).
@@ -276,8 +276,8 @@ this sentence), Emacs stops considering it as a symbol that is
 supposed to be associated to a value and evaluates it as a
 string. Something like a message to display to the human reader.
 
- ELISP> "rose"
- "rose"
+: ELISP> "rose"
+: "rose"
 
 Any sequence of characters that is between double quotations marks is
 considered as one string and its value is the string itself. Strings
@@ -294,21 +294,21 @@ the evaluated value remained "rose".
 A symbol evaluates to the value it is associated to, a quoted symbol
 evaluates to the symbol, a string evaluates to the same string.
 
- ELISP> fill-column
- 70 (#o106, #x46, ?F)
+: ELISP> fill-column
+: 70 (#o106, #x46, ?F)
 
- ELISP> 'fill-column
- fill-column
+: ELISP> 'fill-column
+: fill-column
 
- ELISP> "fill-column"
- "fill-column"
+: ELISP> "fill-column"
+: "fill-column"
 
 *** Lists
 Now, let's try to associate atoms together to see if they can fusion
 into something interesting. For example, let's try to add 2 and 3.
 
- ELISP> add 2 and 3
- *** IELM error ***  More than one sexp in input
+: ELISP> add 2 and 3
+: *** IELM error ***  More than one sexp in input
 
 Ooops. We did something wrong, let's learn from that. Our "input" is
 "add 2 and 3". That input has more than one "sexp" in it and that's
@@ -316,8 +316,8 @@ wrong. And it's not an EVALuation error, but an IELM error.
 
 Let's see if we met sexps before:
 
- ELISP> 65 65
- *** IELM error *** More than one sexp in input
+: ELISP> 65 65
+: *** IELM error *** More than one sexp in input
 
 Here. 65 is also a "sexp", which is in fact short for "s-expression",
 which is itself short for "symbolic expression" which is also what
@@ -329,8 +329,8 @@ not want more than one sexp at a time. So let's feed it just one sexp
 with our 4 elements. Let's start with what we know: double quotation
 marks.
 
- ELISP> "add 2 and 3"
- "add 2 and 3"
+: ELISP> "add 2 and 3"
+: "add 2 and 3"
 
 Good, that's a string, which as an atom is also a single sexp, but
 that's not 5.
@@ -361,14 +361,14 @@ That's it.
 
 Let's try that.
 
- ELISP> (add 2 and 3)
- *** Eval error ***  Symbol’s function definition is void: add
+: ELISP> (add 2 and 3)
+: *** Eval error ***  Symbol’s function definition is void: add
 
 Interesting. We've seen a similar error message before, when we
 evaluated *rose*.
 
- ELISP> rose
- *** Eval error ***  Symbol's value as variable is void: rose
+: ELISP> rose
+: *** Eval error ***  Symbol's value as variable is void: rose
 
 So, "add" is interpreted as a *symbol* and in that position it is
 expected to be a *function* but Emacs seemingly does not recognize the
@@ -389,15 +389,15 @@ did for the 'rose symbol above, and Emacs would be fine with that
 because we're asking it to not evaluate the list but just return it as
 is:
 
- ELISP> '(add 2 and 3)
- (add 2 and 3)
+: ELISP> '(add 2 and 3)
+: (add 2 and 3)
 
 Now, let's go back to adding up 2 and 3. In our mathematics classes we
 did not use "add" to add two numbers, we used *+*. So let's try that
 instead:
 
- ELISP> (+ 2 and 3)
- *** Eval error ***  Symbol’s value as variable is void: and
+: ELISP> (+ 2 and 3)
+: *** Eval error ***  Symbol’s value as variable is void: and
 
 We're getting closer. *+* is considered as a function (unlike *add*), 2
 does not cause problems, but *and* does since Emacs wants it to be a
@@ -408,8 +408,8 @@ not what we want.
 Back to the math class, we did not use "and" to do our additions did
 we? Let's get rid of it.
 
- ELISP> (+ 2 3)
- 5 (#o5, #x5, ?\C-e)
+: ELISP> (+ 2 3)
+: 5 (#o5, #x5, ?\C-e)
 
 Et voilà! *+* is recognized as a symbol that's attached to a function
 that's actually defined as adding numbers and 2 as well as 3 are
@@ -419,11 +419,11 @@ call what follows "arguments".
 
 By the way, any kind of space between the elements/arguments would work:
 
- ELISP>(+
- 2
- 3
- )
- 5 (#o5, #x5, ?\C-e)
+: ELISP>(+
+: 2
+: 3
+: )
+: 5 (#o5, #x5, ?\C-e)
 
 Spaces, new lines etc. are called "whitespace". And any whitespace is good to separate elements in a list.
 
@@ -435,8 +435,8 @@ sexp. We remember that ielm does not like having more than one sexp on
 one evaluation line, so we can use the trick of putting (+ 2 3) twice
 on the evaluation line and see what the error message will be:
 
- ELISP>(+ 2 3) (+ 2 3)
- *** IELM error ***  More than one sexp in input
+: ELISP>(+ 2 3) (+ 2 3)
+: *** IELM error ***  More than one sexp in input
 
 Here we go. Lists too are sexps. And since ielm evaluates only one
 sexp at a time, putting two lists on the evaluation line will result
@@ -463,8 +463,8 @@ Is (+ 2 3) itself a function? As far as we've seen, it doesn't look
 like one. (+ 2 3) is a list. So we're almost guaranteed to generate an
 error message. Let's try:
 
- ELISP>((+ 2 3) (+ 2 3))
- *** Eval error ***  Invalid function: (+ 2 3)
+: ELISP>((+ 2 3) (+ 2 3))
+: *** Eval error ***  Invalid function: (+ 2 3)
 
 Well, we knew that already, didn't we?
 
@@ -479,8 +479,8 @@ We already know that (+ 2 3) is 5, so basically what we sent to Emacs was (5 5),
 We've seen different types of Lisp elements. Let's try to add them all
 up:
 
- ELISP> (+ 2 fill-column 'rose "this is a string" (+ 2 3))
- *** Eval error ***  Wrong type argument: number-or-marker-p, rose
+: ELISP> (+ 2 fill-column 'rose "this is a string" (+ 2 3))
+: *** Eval error ***  Wrong type argument: number-or-marker-p, rose
 
 Emacs does not mind having a + as the first element of the list
 (expected), it does not mind having 2 as the second element, which
@@ -493,8 +493,8 @@ appropriate *type* because "number-or-marker-p"...
 
 'rose is of the wrong type, but what of unquoted *rose*:
 
- ELISP>(+ 2 fill-column rose "this is a string" (+ 2 3))
- *** Eval error ***  Symbol’s value as variable is void: rose
+: ELISP>(+ 2 fill-column rose "this is a string" (+ 2 3))
+: *** Eval error ***  Symbol’s value as variable is void: rose
 
 That small quote was enough to profundly change the status of *rose*.
 
@@ -510,8 +510,8 @@ expression.
 Let's remove rose from the list for the moment and see the rest of the
 sexp.
 
- ELISP>(+ 2 fill-column "this is a string" (+ 2 3))
- *** Eval error ***  Wrong type argument: number-or-marker-p, "this is a string"
+: ELISP>(+ 2 fill-column "this is a string" (+ 2 3))
+: *** Eval error ***  Wrong type argument: number-or-marker-p, "this is a string"
 
 Here again, we see that + expects "number or marker" arguments which a
 string is not and so Emacs stops evaluating the sexp and returns an
@@ -519,8 +519,8 @@ error message.
 **** TODO find a function that give the type of its argument
 Let's remove the string and see what's left:
 
- ELISP>(+ 2 fill-column (+ 2 3))
- 77 (#o115, #x4d, ?M)
+: ELISP>(+ 2 fill-column (+ 2 3))
+: 77 (#o115, #x4d, ?M)
 
 Nice! We see that (+ 2 3) is evaluated before being considered as an
 argument for +, just like fill-column was, and since it was evaluated
@@ -544,35 +544,35 @@ So, what is this number-or-marker-p thing?
 
 Let's try to use it as a function:
 
- ELISP> (number-or-marker-p 3)
- t
- ELISP> (number-or-marker-p fill-column)
- t
- ELISP> (number-or-marker-p "rose")
- nil
+: ELISP> (number-or-marker-p 3)
+: t
+: ELISP> (number-or-marker-p fill-column)
+: t
+: ELISP> (number-or-marker-p "rose")
+: nil
 
 *nil* means "nothing" or "non-existent". In the context of Lisp, it means *false*. It is the opposite of *t*, which means *true*. So the function tells us that "rose" is *not* a number or a marker.
 
- ELISP> (number-or-marker-p rose)
- *** Eval error ***  Symbol’s value as variable is void: rose
+: ELISP> (number-or-marker-p rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
 
 Here we are, number-or-marker-p is a function that tests whether its argument is a number or marker. In the case of + we can guess that + calls number-or-marker-p to test all its argument to see if it really can add them all up.
 
 Let's try a function that, we expect, won't accept numbers or markers as arguments:
 
- ELISP> (message 3)
- *** Eval error ***  Wrong type argument: stringp, 3
+: ELISP> (message 3)
+: *** Eval error ***  Wrong type argument: stringp, 3
 
 *message* expects strings and we can infer that stringp is a function that tests whether its argument is a string or not:
 
- ELISP> (stringp 3)
- nil
- ELISP> (stringp "rose")
- t
- ELISP> (stringp 'rose)
- nil
- ELISP> (stringp rose)
- *** Eval error ***  Symbol’s value as variable is void: rose
+: ELISP> (stringp 3)
+: nil
+: ELISP> (stringp "rose")
+: t
+: ELISP> (stringp 'rose)
+: nil
+: ELISP> (stringp rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
 
 Et voilà!
 
@@ -595,8 +595,8 @@ An elisp  program is thus just a list of elements that are evaluated sequentiall
 Emacs is a fully documented system. You can find information on all
 the functions that it uses by using the *describe-function* function.
 
- ELISP> (describe-function quote)
- *** Eval error ***  Symbol’s value as variable is void: quote
+: ELISP> (describe-function quote)
+: *** Eval error ***  Symbol’s value as variable is void: quote
 
 *describe-function* is a normal function that evaluates all its
 elements one by one. In this position, *quote* is considered a
@@ -607,8 +607,8 @@ So, what is the sexp that is evaluated as being *quote*?
 Well, (quote quote) of course, or 'quote, to make things simple. Let's
 try that:
 
- ELISP> (describe-function 'quote)
- ...........
+: ELISP> (describe-function 'quote)
+: ...........
 
 When you evaluate this in *ielm*, two things happen. The first is that
 a help message is displayed below the ELISP> prompt, just like for
@@ -617,22 +617,22 @@ below the *ielm* buffer to display the help message (that's the
 standard way to display a help message). The help buffer has a better
 format that I'll copy here:
 
- ==========================================================================
- quote is a special form in ‘C source code’.
-
- (quote ARG)
-
- Return the argument, without evaluating it.  ‘(quote x)’ yields ‘x’.
- Warning: ‘quote’ does not construct its return value, but just
- returns the value that was pre-constructed by the Lisp reader (see
- info node ‘(elisp)Printed Representation’).
- This means that '(a . b) is not identical to (cons 'a 'b): the former
- does not cons.  Quoting should be reserved for constants that will
- never be modified by side-effects, unless you like self-modifying
- code.
- See the common pitfall in info node ‘(elisp)Rearrangement’ for an
- example of unexpected results when a quoted object is modified.
- ==========================================================================
+: ==========================================================================
+: quote is a special form in ‘C source code’.
+:
+: (quote ARG)
+:
+: Return the argument, without evaluating it.  ‘(quote x)’ yields ‘x’.
+: Warning: ‘quote’ does not construct its return value, but just
+: returns the value that was pre-constructed by the Lisp reader (see
+: info node ‘(elisp)Printed Representation’).
+: This means that '(a . b) is not identical to (cons 'a 'b): the former
+: does not cons.  Quoting should be reserved for constants that will
+: never be modified by side-effects, unless you like self-modifying
+: code.
+: See the common pitfall in info node ‘(elisp)Rearrangement’ for an
+: example of unexpected results when a quoted object is modified.
+: ==========================================================================
 
 The help message says what we've already discovered: *quote* is a
 special form and it takes only one argument (ARG). And what it does is
@@ -641,18 +641,18 @@ bit obscure and you can ignore it for now.
 
 What about describing the *describe-function* function?
 
- ELISP> (describe-function 'describe-function)
- ==========================================================================
- describe-function is an interactive autoloaded compiled Lisp function
- in ‘help-fns.el’.
-
- It is bound to C-h f, <f1> f, <help> f, <menu-bar> <help-menu>
- <describe> <describe-function>.
-
- (describe-function FUNCTION)
-
- Display the full documentation of FUNCTION (a symbol).
- ==========================================================================
+: ELISP> (describe-function 'describe-function)
+: ==========================================================================
+: describe-function is an interactive autoloaded compiled Lisp function
+: in ‘help-fns.el’.
+:
+: It is bound to C-h f, <f1> f, <help> f, <menu-bar> <help-menu>
+: <describe> <describe-function>.
+:
+: (describe-function FUNCTION)
+:
+: Display the full documentation of FUNCTION (a symbol).
+: ==========================================================================
 
 This help message also tells us that the argument is not ARG, as for
 *quote*, but FUNCTION, hinting at the fact that it does not take just
@@ -671,31 +671,31 @@ argument. *quote* is a *special form* because it's evaluation rules do
 not conform to the lisp standard. There are other special forms that
 all have specific evaluation rules.
 
- ELISP> (quote rose)
- rose
+: ELISP> (quote rose)
+: rose
 
- ELISP> (quote rose bud)
- *** Eval error ***  Wrong number of arguments: quote, 2
+: ELISP> (quote rose bud)
+: *** Eval error ***  Wrong number of arguments: quote, 2
 
 The quote function does not accept 2 arguments...
 
- ELISP> (quote (rose bud))
- (rose bud)
+: ELISP> (quote (rose bud))
+: (rose bud)
 *** Numbers
 **** Number or Marker
 
 We saw above that *number-or-marker-p* was actually a function that checks whether a given argument is a number or a marker, let's check its definition by using the function *describe-function*:
 
- ELISP> (describe-function 'number-or-marker-p)
- ==========================================================================
- number-or-marker-p is a built-in function in ‘src/data.c’.
-
- (number-or-marker-p OBJECT)
-
- Return t if OBJECT is a number or a marker.
-
- [back]
- ==========================================================================
+: ELISP> (describe-function 'number-or-marker-p)
+: ==========================================================================
+: number-or-marker-p is a built-in function in ‘src/data.c’.
+:
+: (number-or-marker-p OBJECT)
+:
+: Return t if OBJECT is a number or a marker.
+:
+: [back]
+: ==========================================================================
 
 We now understand what happens when we ask Emacs to add objects. Once
 Emacs evaluates the first element of the list as being the function
@@ -710,40 +710,40 @@ evaluation stops and Emacs displays an error message.
 Let's see how that works with the numbers we evaluated in the first
 chapter, where we saw that 65 was equivalent to #o101, #x41 and ?A:
 
- ELISP> (number-or-marker-p 65)
- t
-
- ELISP> (number-or-marker-p #o101)
- t
-
- ELISP> (number-or-marker-p #x41)
- t
-
- ELISP> (number-or-marker-p ?A)
- t
+: ELISP> (number-or-marker-p 65)
+: t
+: 
+: ELISP> (number-or-marker-p #o101)
+: t
+: 
+: ELISP> (number-or-marker-p #x41)
+: t
+: 
+: ELISP> (number-or-marker-p ?A)
+: t
 
 Now, let's see if how that works for *A*, which looks like the
 character A:
 
- ELISP> (number-or-marker-p A)
- nil
+: ELISP> (number-or-marker-p A)
+: nil
 
 If we evaluate *A*, we find that it is just like *rose*, a variable
 for which no value has been assigned:
 
- ELISP> A
- *** Eval error ***  Symbol’s value as variable is void: A
+: ELISP> A
+: *** Eval error ***  Symbol’s value as variable is void: A
 **** +
 We already know *+*, but let check its definition:
 
- ELISP> (describe-function '+)
- ==========================================================================
- + is a built-in function in ‘C source code’.
-
- (+ &rest NUMBERS-OR-MARKERS)
-
- Return sum of any number of arguments, which are numbers or markers.
-==========================================================================
+: ELISP> (describe-function '+)
+: ==========================================================================
+: + is a built-in function in ‘C source code’.
+: 
+: (+ &rest NUMBERS-OR-MARKERS)
+: 
+: Return sum of any number of arguments, which are numbers or markers.
+: ==========================================================================
 
 *+* is a standard function and &rest is a keyword that indicates that
 any number of argument can follow. The arguments are
@@ -752,214 +752,214 @@ any number of argument can follow. The arguments are
 Markers are used to specify a position in an Emacs buffer. They are
 basically numbers for a specific use case.
 
- ELISP> (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
- 67 (#o103, #x43, ?C)
+: ELISP> (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
+: 67 (#o103, #x43, ?C)
 
 Emacs evaluates the elements one by one, so what we just did is:
-        (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
-     => (+ 1 2 3 (+ 4 5 6 *24* 10) 12)
-     => (+ 1 2 3 *49* 12)
-     => 67 (#o103, #x43, ?C)**** Some arithmetics
+:        (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
+:     => (+ 1 2 3 (+ 4 5 6 *24* 10) 12)
+:     => (+ 1 2 3 *49* 12)
+:     => 67 (#o103, #x43, ?C)**** Some arithmetics
 
 Let's see how Emacs defines a few simple functions. We've seen *+*
 already so let's go straight to *-*.
 
 **** -
- ELISP>  (describe-function '-)
-
-==========================================================================
-- is a built-in function in ‘C source code’.
-
-(- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
-
-Negate number or subtract numbers or markers and return the result.
-With one arg, negates it.  With more than one arg,
-subtracts all but the first from the first.
-==========================================================================
+: ELISP>  (describe-function '-)
+: 
+: ==========================================================================
+: - is a built-in function in ‘C source code’.
+: 
+: (- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
+: 
+: Negate number or subtract numbers or markers and return the result.
+: With one arg, negates it.  With more than one arg,
+: subtracts all but the first from the first.
+: ==========================================================================
 
 The first argument is optional:
 
- ELISP> (-)
- 0 (#o0, #x0, ?\C-@)
+: ELISP> (-)
+: 0 (#o0, #x0, ?\C-@)
 
 Where there is only ne argument it is negated:
 
- ELISP> (- 3)
- -3 (#o377777777777777777775, #x3ffffffffffffffd)
- ELISP> (- -3)
- 3 (#o3, #x3, ?\C-c)
+: ELISP> (- 3)
+: -3 (#o377777777777777777775, #x3ffffffffffffffd)
+: ELISP> (- -3)
+: 3 (#o3, #x3, ?\C-c)
 
 When there are 2 ore more arguments, the arguments after the first are all sbtracted from the first:
 
- ELISP> (- 3 2)
- 1 (#o1, #x1, ?\C-a)
- ELISP> (- 3 2 3)
- -2 (#o377777777777777777776, #x3ffffffffffffffe)
+: ELISP> (- 3 2)
+: 1 (#o1, #x1, ?\C-a)
+: ELISP> (- 3 2 3)
+: -2 (#o377777777777777777776, #x3ffffffffffffffe)
 
 **** *
- ELISP>  (describe-function '*)
+: ELISP>  (describe-function '*)
+: 
+: ==========================================================================
+: * is a built-in function in ‘C source code’.
+: 
+: (* &rest NUMBERS-OR-MARKERS)
+: 
+: Return product of any number of arguments, which are numbers or markers.
+: ==========================================================================
 
-==========================================================================
- * is a built-in function in ‘C source code’.
+: ELISP> (*)
+: 1 (#o1, #x1, ?\C-a)
 
-(* &rest NUMBERS-OR-MARKERS)
+: ELISP> (* 2)
+: 2 (#o2, #x2, ?\C-b)
 
-Return product of any number of arguments, which are numbers or markers.
-==========================================================================
-
- ELISP> (*)
- 1 (#o1, #x1, ?\C-a)
-
- ELISP> (* 2)
- 2 (#o2, #x2, ?\C-b)
-
- ELISP> (* 2 3)
- 6 (#o6, #x6, ?\C-f)
+: ELISP> (* 2 3)
+: 6 (#o6, #x6, ?\C-f)
 
 And, by the way:
 
- ELISP> (* 2 ?z)
- 244 (#o364, #xf4, ?ô)
+: ELISP> (* 2 ?z)
+: 244 (#o364, #xf4, ?ô)
 
 **** /
- ELISP>  (describe-function '/)
-
-==========================================================================
-/ is a built-in function in ‘C source code’.
-
-(/ NUMBER &rest DIVISORS)
-
-Divide number by divisors and return the result.
-With two or more arguments, return first argument divided by the rest.
-With one argument, return 1 divided by the argument.
-The arguments must be numbers or markers.
-==========================================================================
+: ELISP>  (describe-function '/)
+: 
+: ==========================================================================
+: / is a built-in function in ‘C source code’.
+: 
+: (/ NUMBER &rest DIVISORS)
+: 
+: Divide number by divisors and return the result.
+: With two or more arguments, return first argument divided by the rest.
+: With one argument, return 1 divided by the argument.
+: The arguments must be numbers or markers.
+: ==========================================================================
 
 Let's try a few things:
 
- ELISP> (/)
- *** Eval error ***  Wrong number of arguments: /, 0
+: ELISP> (/)
+: *** Eval error ***  Wrong number of arguments: /, 0
 
 The definition told us we needed one or more arguments.
 
- ELISP> (/ 1)
- 1 (#o1, #x1, ?\C-a)
+: ELISP> (/ 1)
+: 1 (#o1, #x1, ?\C-a)
 
- ELISP> (/ 0)
- *** Eval error ***  Arithmetic error
+: ELISP> (/ 0)
+: *** Eval error ***  Arithmetic error
 
 Division by 0 is not allowed even in elisp.
 
- ELISP> (/ 2)
- 0 (#o0, #x0, ?\C-@)
+: ELISP> (/ 2)
+: 0 (#o0, #x0, ?\C-@)
 
 1 divided by 2 as integers does not result in a floating point value, but in an integer.
 
- ELISP> (/ 2.0)
- 0.5
+: ELISP> (/ 2.0)
+: 0.5
 
- ELISP> (/ 3.0)
- 0.3333333333333333
+: ELISP> (/ 3.0)
+: 0.3333333333333333
 
- ELISP (/ 3.0 3.0)
- 1.0
+: ELISP (/ 3.0 3.0)
+: 1.0
 
 **** %
- ELISP>  (describe-function '%)
+: ELISP>  (describe-function '%)
+: 
+: ==========================================================================
+: % is a built-in function in ‘C source code’.
+: 
+: (% X Y)
+: 
+: Return remainder of X divided by Y.
+: Both must be integers or markers.
+: ==========================================================================
 
-==========================================================================
-% is a built-in function in ‘C source code’.
-
-(% X Y)
-
-Return remainder of X divided by Y.
-Both must be integers or markers.
-==========================================================================
-
- ELISP> (% 1)
- *** Eval error ***  Wrong number of arguments: %, 1
+: ELISP> (% 1)
+: *** Eval error ***  Wrong number of arguments: %, 1
 
 The function requires 2 arguments.
 
- ELISP> (% 0 1)
- 0 (#o0, #x0, ?\C-@)
+: ELISP> (% 0 1)
+: 0 (#o0, #x0, ?\C-@)
 
 0 divided by 1 is 0 and the remainder is 0.
 
- ELISP> (% 1 0)
- *** Eval error ***  Arithmetic error
+: ELISP> (% 1 0)
+: *** Eval error ***  Arithmetic error
 
 Division by 0 is not allowed, thus there are no possibile remainders.
 
- ELISP> (% 3 5)
- 3 (#o3, #x3, ?\C-c)
+: ELISP> (% 3 5)
+: 3 (#o3, #x3, ?\C-c)
 
 3 divided by 5 is 0 and the remainder is 3.
 
- ELISP> (% fill-column 3)
- 1 (#o1, #x1, ?\C-a)
+: ELISP> (% fill-column 3)
+: 1 (#o1, #x1, ?\C-a)
 
 70 divided by 3 is 23 and the remainder is 1.
 
 **** expt, sqrt
- ELISP>  (describe-function 'expt)
+: ELISP>  (describe-function 'expt)
+: 
+: ==========================================================================
+: expt is a built-in function in ‘src/floatfns.c’.
+: 
+: (expt ARG1 ARG2)
+: 
+: Return the exponential ARG1 ** ARG2.
+: ==========================================================================
 
-==========================================================================
-expt is a built-in function in ‘src/floatfns.c’.
 
-(expt ARG1 ARG2)
+: ELISP>  (describe-function 'sqrt)
+: 
+: ==========================================================================
+: sqrt is a built-in function in ‘src/floatfns.c’.
+: 
+: (sqrt ARG)
+: 
+: Return the square root of ARG.
+: ==========================================================================
 
-Return the exponential ARG1 ** ARG2.
-==========================================================================
+: ELISP> (expt 0 0)
+: 1 (#o1, #x1, ?\C-a)
+: 
+: ELISP> (expt 1 0)
+: 1 (#o1, #x1, ?\C-a)
 
+: ELISP> (expt 0 1)
+: 0 (#o0, #x0, ?\C-@)
 
- ELISP>  (describe-function 'sqrt)
+: ELISP> (expt 2 8)
+: 256 (#o400, #x100, ?Ā)
 
-==========================================================================
-sqrt is a built-in function in ‘src/floatfns.c’.
+: ELISP> (expt 2 1.5)
+: 2.8284271247461903
 
-(sqrt ARG)
-
-Return the square root of ARG.
-==========================================================================
-
- ELISP> (expt 0 0)
- 1 (#o1, #x1, ?\C-a)
-
- ELISP> (expt 1 0)
- 1 (#o1, #x1, ?\C-a)
-
- ELISP> (expt 0 1)
- 0 (#o0, #x0, ?\C-@)
-
- ELISP> (expt 2 8)
- 256 (#o400, #x100, ?Ā)
-
- ELISP> (expt 2 1.5)
- 2.8284271247461903
-
- ELISP> (sqrt (expt 2 3))
- 2.8284271247461903
+: ELISP> (sqrt (expt 2 3))
+: 2.8284271247461903
 *** TODO Strings (add more string related functions)
 **** Sending messages
 
-(describe-function 'message)
+: (describe-function 'message)
 
-(message FORMAT-STRING &rest ARGS)
-
-Display a message at the bottom of the screen.
-The message also goes into the ‘*Messages*’ buffer, if ‘message-log-max’
-is non-nil.  (In keyboard macros, that’s all it does.)
-Return the message.
+: (message FORMAT-STRING &rest ARGS)
+: 
+: Display a message at the bottom of the screen.
+: The message also goes into the ‘*Messages*’ buffer, if ‘message-log-max’
+: is non-nil.  (In keyboard macros, that’s all it does.)
+: Return the message.
 
 FORMAT-STRING is a new type of argument. If you check the Emacs Lisp Reference, you'll see that it's a string that can accept modifications based on special characters that it includes and on the values of ARGS:
 
- ELISP> (message "I am not yet %d years old." fill-column)
- "I am not yet 70 years old."
+: ELISP> (message "I am not yet %d years old." fill-column)
+: "I am not yet 70 years old."
 
- ELISP> (message "The octal value of %d is %o, its hexadecimal value is %x and the character it represents is %c." 65 65 65 65)
-
- "The octal value of 65 is 101, its hexadecimal value is 41 and the character it represents is A."
+: ELISP> (message "The octal value of %d is %o, its hexadecimal value is %x and the character it represents is %c." 65 65 65 65)
+: 
+: "The octal value of 65 is 101, its hexadecimal value is 41 and the character it represents is A."
 *** TODO Buffers (add more buffer related functions)
 *** TODO General (add more general functions)
 **** Testing types
@@ -968,59 +968,59 @@ the Elisp Reference Manual [2.7 Type Predicates]. We've seen two
 already: *number-or-marker-p* and *stringp*. The manual suggests that
 we can check whether an object is an atom or not:
 
- ELISP> (atom 65)
- t
- ELISP> (atom ?a)
- t
- ELISP> (atom "rose")
- t
- ELISP> (atom 'rose)
- t
- ELISP> (atom rose)
- *** Eval error ***  Symbol’s value as variable is void: rose
+: ELISP> (atom 65)
+: t
+: ELISP> (atom ?a)
+: t
+: ELISP> (atom "rose")
+: t
+: ELISP> (atom 'rose)
+: t
+: ELISP> (atom rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
 
 *rose* has no value assigned so Emacs can't tell whether it's an atom
 or not.
 
- ELISP> (atom '(65 "rose" fill-column))
- nil
+: ELISP> (atom '(65 "rose" fill-column))
+: nil
 
 A *list* is not an *atom*, except for this list:
 
-ELISP> (atom '())
-t
+: ELISP> (atom '())
+: t
 
 The *empty list* is an atom.
 
 What about lists?
 
- ELISP> (listp 65)
- nil
- ELISP> (listp (65))
- *** Eval error ***  Invalid function: 65
+: ELISP> (listp 65)
+: nil
+: ELISP> (listp (65))
+: *** Eval error ***  Invalid function: 65
 
 The first element of an unquoted list is always expected to be a
 function. Since it is not, Emacs has no way to properly evaluate that
 object.
 
- ELISP> (listp '(65))
- t
- ELISP> (listp '())
- t
+: ELISP> (listp '(65))
+: t
+: ELISP> (listp '())
+: t
 
 Ok, now what about *t* and *nil* themselves?
 
- ELISP> (atom nil)
- t
- ELISP> (listp nil)
- t
+: ELISP> (atom nil)
+: t
+: ELISP> (listp nil)
+: t
 
 *nil* is both an atom and a list...
 
- ELISP> (atom t)
- t
- ELISP> (listp t)
- nil
+: ELISP> (atom t)
+: t
+: ELISP> (listp t)
+: nil
 
 A quick look at the Emacs Lisp Reference Manual's index shows an entry
 for *nil* where both *t* and *nil* are explained. There, we see that
@@ -1037,20 +1037,20 @@ or not, they all are.
 
 We need a function that works like this:
 
-(set [this symbol] [as holding this value])
+: (set [this symbol] [as holding this value])
 
 It happens that there is a *set* function:
 
- (describe-function 'set)
-
- (set SYMBOL NEWVAL)
-
- Set SYMBOL’s value to NEWVAL, and return NEWVAL.
+: (describe-function 'set)
+: 
+: (set SYMBOL NEWVAL)
+: 
+: Set SYMBOL’s value to NEWVAL, and return NEWVAL.
 
 *set* requires a SYMBOL, so let's see what symbols we have already:
 
- ELISP> (symbolp rose)
- *** Eval error ***  Symbol’s value as variable is void: rose
+: ELISP> (symbolp rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
 
 *rose* is a symbol, but since *symbolp* is a normal function, it
 *first* evaluates its arguments before doing anything on them, if
@@ -1058,25 +1058,25 @@ there is an error with *rose* because it does not evaluate to
 something that *symbolp* can work with, we need to feed *symbolp* with
 something that *once evaluated* will be the symbol *rose*...
 
- ELISP> (symbolp (quote rose))
- t
+: ELISP> (symbolp (quote rose))
+: t
 
 Et voilà! (quote rose) properly evaluates to *rose* and *rose* is a
 symbol (although without a value at the moment), so we can now feed
 *'rose* to *set* along with a value:
 
- ELISP> (set 'rose "a beautiful flower")
- "a beautiful flower"
+: ELISP> (set 'rose "a beautiful flower")
+: "a beautiful flower"
 
 Et voilà again! Now we can at last see what *rose* is:
 
- ELISP> rose
- "a beautiful flower"
+: ELISP> rose
+: "a beautiful flower"
 
 Note how we do not have an error message anymore...
 
- ELISP> (message "A rose is %s." rose)
- "a rose is a beautiful flower"
+: ELISP> (message "A rose is %s." rose)
+: "a rose is a beautiful flower"
 
 And note how *rose* can now fully be deployed anywhere we need it.
 
@@ -1085,38 +1085,38 @@ generate errors. To avoid this, there is *setq*. *setq* does not
 evaluate it's first argument. As such, it is not a normal
 function. Like *quote*, it is a special form.
 
- ELISP> (set violet "a beautiful flower")
- *** Eval error ***  Wrong type argument: symbolp, "A violet is also a beautiful flower."
+: ELISP> (set violet "a beautiful flower")
+: *** Eval error ***  Wrong type argument: symbolp, "A violet is also a beautiful flower."
 
 This would not work, but we knew it.
 
- ELISP> (setq violet "a beautiful flower")
- "a beautiful flower"
+: ELISP> (setq violet "a beautiful flower")
+: "a beautiful flower"
 
 This works because with *setq*, there is no need to quote *violet*.
 
- ELISP> (message "A %s is also %s." 'violet violet)
- "A violet is also a beautiful flower"
+: ELISP> (message "A %s is also %s." 'violet violet)
+: "A violet is also a beautiful flower"
 
 Both *set* and *setq* can be used to set values to symbols that
 already have values, but we'll only use *setq* here because it is more
 convenient:
 
- ELISP> rose
- "a beautiful flower"
- ELISP> (setq rose "the name of a famous singer")
- "the name of a famous singer"
- ELISP> (message "Rose is no more a flower. It is now %s." rose)
- "Rose is no more a flower. It is now the name of a famous singer."
+: ELISP> rose
+: "a beautiful flower"
+: ELISP> (setq rose "the name of a famous singer")
+: "the name of a famous singer"
+: ELISP> (message "Rose is no more a flower. It is now %s." rose)
+: "Rose is no more a flower. It is now the name of a famous singer."
 
 And we can use anything as the second argument:
 
- ELISP> violet
- "a beautiful flower"
- ELISP> (setq violet (message "A %s is also %s." 'violet violet))
- "A violet is also a beautiful flower."
- ELISP> violet
- "A violet is also a beautiful flower."
+: ELISP> violet
+: "a beautiful flower"
+: ELISP> (setq violet (message "A %s is also %s." 'violet violet))
+: "A violet is also a beautiful flower."
+: ELISP> violet
+: "A violet is also a beautiful flower."
 
 *** Assigning functions to your symbols
 * ===================================================================
@@ -1144,13 +1144,13 @@ définition formelle en 12.4
 
 * 2e essai, copié sur ANSI Common Lisp
 
-> 1
-  1 (#o1, #x1, ?\C-a)
+: > 1
+:  1 (#o1, #x1, ?\C-a)
 
   => 1 is equivalent to octal/hexadecimal/character C-a
 
-> (+ 2 3)
-  5 (#o5, #x5, ?\C-e)
+: > (+ 2 3)
+:  5 (#o5, #x5, ?\C-e)
 
   => + is the operator, 2 and 3 are the arguments
 * GNU Free Documentation License
