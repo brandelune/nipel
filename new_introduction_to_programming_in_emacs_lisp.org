@@ -1,0 +1,1612 @@
+* Copyright notice:
+Copyright 2017 Jean-Christophe Helary
+* License notice:
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
+copy of the license is included in the section entitled “GNU Free
+Documentation License”.
+* A New Introduction to Programming in Emacs Lisp
+** Introduction to the environment
+*** Emacs Lisp and Emacs
+Emacs Lisp (abreviated elisp) is a programming language of the Lisp
+family and is mostly used in Emacs. This introduction is based on
+Robert J. Chassel's Introduction to Programming in Emacs Lisp and
+tries to cover the same ground. It does not assume that you have an
+experience in programming but that you at least know the basics of
+Emacs. If that is not the case, take the time to go through the Emacs
+tutorial. If you read this document in Emacs, you can type C-h t (the
+"Control" key and the "h" key together, followed by "t" key) to open
+the tutorial.
+
+Emacs is mostly written in elisp. Emacs extensions (modes) are written
+in elisp. You can write external programs and execute them from the
+command line by using Emacs as the interpreter. Elisp is a Lisp that's
+designed as an extension language to Emacs and but you can also use it
+as a general purpose language. Elisp comes with functions dedicated to
+text editing in Emacs, it also comes with data structures that
+directly reflect Emacs objects (a buffer, a window, a character
+stream, a font...) along with standard data structures that can be
+found in other languages (an integer, a floating number, a string...)
+
+If you want to work efficiently in Emacs, knowledge of elisp will help
+you considerably. If you want to learn a new language that's
+relatively straightforward, elisp is a good choice. Also, elisp is a
+good introduction to other Lisp languages (Scheme, Common Lisp) that
+have applications outside the world of text editing (and you can
+program in such languages within Emacs, through dedicated extensions
+writen in elisp...)
+
+*** Emacs Lisp in Emacs
+**** Running the code
+Emacs is an environment where you can write elisp code and evaluate it
+right away. If you hit *C-x C-e* (press the *control* key, hold it and
+press the *x* key, release both, press the *control* key, hold it and
+press the *e* key, release both) after a code expression, Emacs will
+evaluate the expression that is just before the cursor. You can do
+that anywhere but if the strings before the cursor are not valid code
+Emacs will open an error buffer to tell you that something is
+wrong. You can dismiss that buffer by hitting *q*, and you'll be back
+the your original buffer.
+
+You can actually try this here. Put the cursor *anywhere* in this
+paragraph and hit *C-x C-e* as I just wrote. You'll see an error message
+appear in the bottom half of the window. Depending on where the cursor
+was the message will differ but it should look like:
+
+: ====================================================
+: Debugger entered--Lisp error: (void-variable cursor)
+:  eval(cursor nil)
+:  elisp--eval-last-sexp(nil)
+:  eval-last-sexp(nil)
+:  funcall-interactively(eval-last-sexp nil)
+:  call-interactively(eval-last-sexp nil nil)
+:  command-execute(eval-last-sexp)
+: ====================================================
+
+Don't worry about what that means, just dismiss the message right away
+by hitting *q*.
+
+You will mostly be using elisp within Emacs. When you start Emacs, you
+can use the *scratch* buffer to type and evaluate elisp code. You can
+read this document in a separate window, type the code in the scratch
+buffer and evaluate it with *C-x C-e* to see the results in the echo
+area (just below the mode line, at the bottom of the window). If you
+read this document in Emacs, you can also evaluate all the code
+directly with *C-x C-e*.
+
+You can try that right away. Put the cursor after the right
+parenthesis, anywhere on the line where the expression *(+ 2 3)* is
+written below:
+
+: (+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
+
+And hit *C-x C-e* the way I indicated above. You should see something
+appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
+worry about what either mean. We just need to see that things work.
+
+Now that we know that things work fine, we need to find a convenient
+way to type some code and make it run. Instead of using the scratch
+buffer, we will use a mode especially designed for elisp. In that
+mode, when you type your elisp code followed by *Enter* (no need for C-x
+C-e), Emacs shows you immediately the result of the code right under
+the code, and displays a new prompt so that you can type some other
+elisp code right away.
+
+That interactive mode is the "Inferior Emacs Lisp Mode". It comes
+preinstalled in Emacs and you can start it by typing *M-x ielm*. Before
+you do that, type *C-x 2* to split your emacs frame in 2 horizontaly
+stacked windows, enter the other window with *C-x o* and then launch
+ielm with *M-x ielm*.
+
+**** Documentation and references
+
+Emacs gives you access to all its documentation from any
+location. That documentation includes everything you need to know
+about elisp. While you read this document and practice, you can open
+the Emacs Lisp Reference in a separate buffer and refer to it when you
+want to further understand a specific topic. To do that hit *C-h i* to
+open the global info manual and go the the [* Elisp: (elisp).  The
+Emacs Lisp Reference Manual.] item.
+
+We'll also use various methods to find information about what we do,
+right when we do it. That way you'll be able to learn right away how
+to discover new things, all by yourself.
+
+*** Learning Emacs Lisp
+You can only learn by typing code, making mistakes, learning from the
+mistakes and typing even more code. To follow this introduction, type
+all the code in your ielm buffer, evaluate it, try new things, read
+the error messages and try to learn from them.
+
+Open a separate buffer and take notes in it. You can write code in
+that separate buffer and evaluate it with *C-x C-e* to confirm that
+you understood how the code worked. Remember that you can write elisp
+code pretty much *anywhere* in Emacs and evaluate it right away. Emacs
+is a fantastic environment to learn programming because it reacts
+right away to your elisp code. You can see right away the result of
+what you're doing, and if it went wrong you can learn from the error
+message that Emacs displays, you can correct your code and you can
+make it run with the expected result right away ("right away" is
+relative to your understanding of elisp, of course).
+
+** The elements of elisp
+*** Expressions
+Code is made of expressions. Expressions are evaluated and the
+evaluation produces results.
+
+There are basically 2 types of elisp expressions. First there are
+atoms: single elements that won't evaluate to anything but their own
+value if they have one or generate an error message if they have
+none. There are many types of atom, but atoms alone won't bring us
+very far.
+
+To do interesting things, we need to create groups of atoms by putting
+atoms between parentheses so that they work together. Such groups are
+called *lists*. Lists are the second type of elisp expressions.
+
+Think of atoms as words and lists as sentences. Uttering single words
+generally does not produce much results. You start to get things done
+when you start speaking sentences. Programs, the subject of this
+document, are like sentences.
+
+Just like every other programming language, elisp programs are lists
+of commands followed by arguments to those commands. Lists can be very
+short and not do much (like the "(+ 2 3)" thing that produced "5"
+above), or can be extremely long and complex and do a lot (like the
+Deep Space 1 code that was not only written in Lisp but also modified
+directly from Earth while Deep Space was 100 million miles away,
+pretty much like we'll be able to modify our code here, within Emacs,
+with much less consequences, granted).
+
+From now on we are going to enter code at the IELM prompt and evaluate
+that code to see the results. Some code will be valid elisp code and
+will produce satisfying results, some code will be valid elisp code
+but will produce errors and some will not be valid elisp code but will
+still help us learn elisp.
+
+*** Atoms
+**** Numbers (atom)
+At the ielm prompt, type 65 followed by Enter:
+
+: ELISP> 65
+
+The result should be displayed immediately under the prompt line:
+
+: ELISP> 65
+: 65 (#o101, #x41, ?A)
+: ELISP> _  <- the cursor is back in position, waiting for some input
+
+What you just did is type an *expression* at the prompt and feed it to
+Emacs. What happened next is that Emacs *read* it, then Emacs
+*evaluated* it, then *printed* the evaluation result and then *looped*
+to create a new prompt for you to enter a new expression. This cycle
+is commonly called a Read-Evaluate-Print Loop, or "repl".
+
+You entered 65, and Emacs evaluated that to the value 65 along with
+the other things between parenthesis that are:
+
+: #o101 = 65 in octal
+: #x41 = 65 in hexadecimal
+: ?A = the character A (surprisingly)
+
+The first 65 is 65 in "decimal", the way numbers are counted the most
+commonly by human being. Emacs supports octal and hexadecimal ways of
+counting too.
+
+Also, as far as Emacs is concered, characters are represented by the
+number that is their position in the very long list that is the
+character set internally supported by Emacs.
+
+For practical purposes, Emacs only displays characters for integer
+values between 0 and 127, although this can be modified by the user
+[-> see 24.9 Evaluating Emacs Lisp Expressions]. If you change that
+setting and evaluate a big number, you'll see that it might not be
+associated anymore to a character. On my machine, the biggest number
+associated to a character is 1114111, but the character is not
+displayable with the fonts I use so I only see: "?􏿿 ".
+
+You may wonder about the ? before A. This is just a convention to say
+"this is the character A, not hexadecimal 10 and not a variable that
+is called A".
+
+All the returned values are equivalent:
+
+: ELISP> #o101
+: 65 (#o101, #x41, ?A)
+
+: ELISP> #x41
+: 65 (#o101, #x41, ?A)
+
+: ELISP> ?A
+: 65 (#o101, #x41, ?A)
+
+Try to enter other numerical values and see what you get. For example:
+
+: ELISP> -10.3
+: -10.3
+
+: ELISP> 10e3
+: 10000.0
+
+Elisp evaluates integers and floating numbers as integers and floating
+numbers. We'll be able to use that later to do some arithmetic.
+
+[-> See Chapter 3 Numbers in the Elisp reference]
+
+**** Symbols (atom)
+We've just seen how numbers were evaluated. What about letters ?
+
+: ELISP> rose
+: *** Eval error ***  Symbol's value as variable is void: rose
+
+Emacs displays an evaluation error message. By reading it, you can see
+that Emacs considered our input as a *symbol*. It interpreted the symbol
+as a *variable*, for which it found that the value was *void*. And since
+the evaluation produced an error and not something like *rose*, we can
+say that we did not do the right thing.
+
+*rose* is interpreted as a symbol that represents a variable for which
+no value has been set. Because no value has been set, Emacs stops the
+evaluation and displays an error message.
+
+There are times when we want to use a symbol but we don't want Emacs to evaluate it right away, becauce its value is not yet set for exemple. For this we *quote* it by preceeding it with an apostrophe.
+
+: ELISP> 'rose
+: rose
+
+Here, Emacs sees that we put the apostrophe before the symbol so it
+won't try to evaluate it and it evaluates the expression as the symbol itself.
+
+Symbols can be non-conventional words. Let's see a symbol that is actually associated to a variable that holds a value:
+
+: ELISP> fill-column
+: 70 (#o106, #x46, ?F)
+
+We're seeing a word that evaluates to a number... This "fill-column"
+symbol is a *variable* that actually holds the value 70. "fill-column" is defined within Emacs as the "Column beyond which automatic line-wrapping should happen." (quoted from C-h v fill-column).
+
+The value is 70 on my machine but it can differ on yours. Since 70 is
+an integer, Emacs also provides us with its octal, hexadecimal and
+"character set" representation.
+
+[-> 8 Symbols]
+
+**** Messages (atom)
+When we put "rose" between double quotation marks (like we just did in
+this sentence), Emacs stops considering it as a symbol that is
+supposed to be associated with a value and evaluates it as a
+string. Something like a message to display to the human reader.
+
+: ELISP> "rose"
+: "rose"
+
+Any sequence of characters that is between double quotations marks is
+considered as one string and its value is the string itself. Strings
+are arrays of characters (the same characters we saw above when we evaluated 65).
+
+[-> 4 Strings and Characters]
+
+**** Symbols and strings summary
+
+When we evaluated rose, Emacs told us that its value was "void". When
+we evaluated 'rose, the value was rose itself. When we input "rose",
+the evaluated value remained "rose".
+
+A symbol evaluates to the value it is associated to, a quoted symbol
+evaluates to the symbol, a string evaluates to the same string.
+
+: ELISP> fill-column
+: 70 (#o106, #x46, ?F)
+
+: ELISP> 'fill-column
+: fill-column
+
+: ELISP> "fill-column"
+: "fill-column"
+
+*** Lists
+Now, let's try to associate atoms together to see if they can fusion
+into something interesting. For example, let's try to add 2 and 3.
+
+: ELISP> add 2 and 3
+: *** IELM error ***  More than one sexp in input
+
+Ooops. We did something wrong, let's learn from that. Our "input" is
+"add 2 and 3". That input has more than one "sexp" in it and that's
+wrong. And it's not an EVALuation error, but an IELM error.
+
+Let's see if we met sexps before:
+
+: ELISP> 65 65
+: *** IELM error *** More than one sexp in input
+
+Here. 65 is also a "sexp", which is in fact short for "s-expression",
+which is itself short for "symbolic expression" which is also what
+we've called "expression" so far. Just so that you know, we also call
+such things "forms".
+
+Here, we have spaces that separate our atoms (or "sexps"). IELM does
+not want more than one sexp at a time. So let's feed it just one sexp
+with our 4 elements. Let's start with what we know: double quotation
+marks.
+
+: ELISP> "add 2 and 3"
+: "add 2 and 3"
+
+Good, that's a string, which as an atom is also a single sexp, but
+that's not 5.
+
+What we did is just create a string that's longer than one word, but
+since Emacs only treats it as a string we've not advanced much.
+
+By the way, a string, however long it is, is still an atom, because it
+is a succession (an array) of characters some of which can happen to
+be spaces but since Emacs does not read human languages, spaces are
+not relevant as far as Emacs strings are concerned.
+
+To have Emacs consider a sexp with multiple elements as a list of
+elements that work together, we need to create something that Emacs
+will consider a list.
+
+All programing languages are based on lists of elements that work
+together. The language syntax specifies how to write the elements so
+that they are considered a valid list of elements for evaluation.
+
+But Elisp and all the other languages of the Lisp family are special
+in that regard because they are "LISt Processing" languages. Lists are
+written in their names. Lists are trivialy easy to create in Lisps
+because lists are what Lisps were made for. In Lisps (and in elisp),
+to create a list, you just put all your elements between parenthesis.
+
+That's it.
+
+Let's try that.
+
+: ELISP> (add 2 and 3)
+: *** Eval error ***  Symbol’s function definition is void: add
+
+Interesting. We've seen a similar error message before, when we
+evaluated *rose*.
+
+: ELISP> rose
+: *** Eval error ***  Symbol's value as variable is void: rose
+
+So, "add" is interpreted as a *symbol* and in that position it is
+expected to be a *function* but Emacs seemingly does not recognize the
+symbol "add" as being defined as something that adds numbers.
+
+If *rose* had been in the position of *add* we would have had the same
+error (don't take my word for it, try). Depending on the context, a
+symbol is expected to work differently. It can be expected to be a
+variable or a function. This behavior is specific to a few Lisp
+dialects to which elisp belongs. Other Lisps would consider that a
+symbol can either be a function or a variable but not both depending
+on it's position.
+
+By the way, we're trying to obtain 5 here, but if we just needed to
+keep that list as is (we may need a list of words that are not to be
+evaluated as symbols right now), we could have quoted it, just like we
+did for the 'rose symbol above, and Emacs would be fine with that
+because we're asking it to not evaluate the list but just return it as
+is:
+
+: ELISP> '(add 2 and 3)
+: (add 2 and 3)
+
+Now, let's go back to adding up 2 and 3. In our mathematics classes we
+did not use "add" to add two numbers, we used *+*. So let's try that
+instead:
+
+: ELISP> (+ 2 and 3)
+: *** Eval error ***  Symbol’s value as variable is void: and
+
+We're getting closer. *+* is considered as a function (unlike *add*), 2
+does not cause problems, but *and* does since Emacs wants it to be a
+variable with some value attached. But if *and* has got a value, we
+won't be adding only 2 and 3 but 2, the value of *and* and 3, which is
+not what we want.
+
+Back to the math class, we did not use "and" to do our additions did
+we? Let's get rid of it.
+
+: ELISP> (+ 2 3)
+: 5 (#o5, #x5, ?\C-e)
+
+Et voilà! *+* is recognized as a symbol that's attached to a function
+that's actually defined as adding numbers and 2 as well as 3 are
+recognized as numbers and get added together to produce 5.
+*+* is the function that adds what follows it, and from now on let's
+call what follows "arguments".
+
+By the way, any kind of space between the elements/arguments would work:
+
+: ELISP>(+
+: 2
+: 3
+: )
+: 5 (#o5, #x5, ?\C-e)
+
+Spaces, new lines etc. are called "whitespace". And any whitespace is good to separate elements in a list.
+
+[-> 5 Lists ]
+
+*** Sexps and evaluation
+Just out of curiosity, let's check if Emacs considers (+ 2 3) as a
+sexp. We remember that ielm does not like having more than one sexp on
+one evaluation line, so we can use the trick of putting (+ 2 3) twice
+on the evaluation line and see what the error message will be:
+
+: ELISP>(+ 2 3) (+ 2 3)
+: *** IELM error ***  More than one sexp in input
+
+Here we go. Lists too are sexps. And since ielm evaluates only one
+sexp at a time, putting two lists on the evaluation line will result
+in an error too.
+
+So, what do we have?
+ • Numbers are atoms and are sexps.
+ • Symbols are atoms and are sexps.
+ • Strings are atoms and are sexps.
+ • Lists are composed of sexps and are sexps.
+
+So we can have something like ((+ 2 3) (+2 3)) and Emacs would
+consider that as one sexp composed of 2 lists each composed of 3
+atoms.
+
+But what would that evaluate to? Let's give it a thought:
+
+The first sexp is (+ 2 3). We have seen above that to avoid an error,
+the first element of a list that we send unquoted for evaluation
+should be a function and the other elements should be arguments to
+that function.
+
+Is (+ 2 3) itself a function? As far as we've seen, it doesn't look
+like one. (+ 2 3) is a list. So we're almost guaranteed to generate an
+error message. Let's try:
+
+: ELISP>((+ 2 3) (+ 2 3))
+: *** Eval error ***  Invalid function: (+ 2 3)
+
+Well, we knew that already, didn't we?
+
+We already know that (+ 2 3) is 5, so basically what we sent to Emacs was (5 5), which we know is not going to give us anything special (not that we won't sometimes need to have such a sexp, but not now).
+
+[ -> 9 Evaluation ]
+
+*** TODO Other kinds of data
+**** functions
+*** TODO find appropriate title for the section [Functions, arguments and types]
+**** number-or-marker-p
+We've seen different types of Lisp elements. Let's try to add them all
+up:
+
+: ELISP> (+ 2 fill-column 'rose "this is a string" (+ 2 3))
+: *** Eval error ***  Wrong type argument: number-or-marker-p, rose
+
+Emacs does not mind having a + as the first element of the list
+(expected), it does not mind having 2 as the second element, which
+also is the first argument of + (equally expected), it does not mind
+having fill-column as the second argument to +, which shows that Emacs
+properly evaluated fill-column to 70 before considering whether it
+would be an appropriate argument for + (not really expected but good
+to know), and then it considers that the symbol 'rose was not of the
+appropriate *type* because "number-or-marker-p"...
+
+'rose is of the wrong type, but what of unquoted *rose*:
+
+: ELISP>(+ 2 fill-column rose "this is a string" (+ 2 3))
+: *** Eval error ***  Symbol’s value as variable is void: rose
+
+That small quote was enough to profundly change the status of *rose*.
+
+In the first case, 'rose is evaluated as rose, and rose, being a
+symbol is neither a number nor a "marker" (we'll see later what a
+marker is), which Emacs seems to expect as an argument to *+*.
+
+In the second case, rose is evaluated as a symbol that represents a
+variable (like fill-column) but unlike fill-column it does not have a
+value so Emacs tells us about that and stops evaluating the
+expression.
+
+Let's remove rose from the list for the moment and see the rest of the
+sexp.
+
+: ELISP>(+ 2 fill-column "this is a string" (+ 2 3))
+: *** Eval error ***  Wrong type argument: number-or-marker-p, "this is a string"
+
+Here again, we see that *+* expects "number or marker" arguments which a
+string is not and so Emacs stops evaluating the sexp and returns an
+error message.
+
+**** TODO find a function that give the type of its argument
+**** type-of
+
+Let's remove the string and see what's left:
+
+: ELISP>(+ 2 fill-column (+ 2 3))
+: 77 (#o115, #x4d, ?M)
+
+Nice! We see that (+ 2 3) is evaluated before being considered as an
+argument for +, just like fill-column was, and since it was evaluated
+to 5, which seems to be considered as a number-or-marker (we don't
+know yet which), it was allowed as an argument and was added to the
+two other arguments.
+
+What we've seen is that Emacs evaluated the whole sexp from left to
+right, stopping at each of its elements and either evaluating them
+directly to see if their evaluation produced something compatible with
+the whole sexp (+ 2 and fill-column) or, in the case of (+ 2 3),
+evaluating each element of sub-sexps to produce an evaluation of that
+specific sub-sexp. Only once Emacs had all the elements evaluated did
+it produce and evaluation of the main sexp:
+
+1. (+ 2 fill-column (+ 2 3))
+2. (+ 2 70 5)
+3. 77
+
+So, what is this number-or-marker-p thing?
+
+Let's try to use it as a function:
+
+: ELISP> (number-or-marker-p 3)
+: t
+: ELISP> (number-or-marker-p fill-column)
+: t
+: ELISP> (number-or-marker-p "rose")
+: nil
+
+*nil* means "nothing" or "non-existent". In the context of Lisp, it means *false*. It is the opposite of *t*, which means *true*. So the function tells us that "rose" is *not* a number or a marker.
+
+: ELISP> (number-or-marker-p rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
+
+Here we are, number-or-marker-p is a function that tests whether its argument is a number or marker. In the case of + we can guess that + calls number-or-marker-p to test all its argument to see if it really can add them all up.
+
+Let's try a function that, we expect, won't accept numbers or markers as arguments:
+
+: ELISP> (message 3)
+: *** Eval error ***  Wrong type argument: stringp, 3
+
+*message* expects strings and we can infer that stringp is a function that tests whether its argument is a string or not:
+
+: ELISP> (stringp 3)
+: nil
+: ELISP> (stringp "rose")
+: t
+: ELISP> (stringp 'rose)
+: nil
+: ELISP> (stringp rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
+
+Et voilà!
+
+[ -> 12 Functions ]
+
+*** Summary
+
+We've learned a huge lot already.
+
+ • Lisp evaluates expressions and returns the resulting value.
+ • Lisp expressions can be atoms or lists
+ • Lisp lists can contain atoms or lists
+ • Lisp expressions are evaluated one element at a time, from left to right
+ • Evaluation stops when an element is not of the expected type, or more generally when an error occurs.
+
+An elisp  program is thus just a list of elements that are evaluated sequentially to produce a global result, and running a program means evaluating the list it is made of. Although we've only dealt with small lists until now, all elisp programs are made of such lists. That's really all there is to lisp.
+
+** Some useful functions
+*** Describe function
+Emacs is a fully documented system. You can find information on all
+the functions that it uses by using the *describe-function* function.
+
+: ELISP> (describe-function quote)
+: *** Eval error ***  Symbol’s value as variable is void: quote
+
+*describe-function* is a normal function that evaluates all its
+elements one by one. In this position, *quote* is considered a
+variable and since it is not associated to a value, an error occurs.
+
+So, what is the sexp that is evaluated as being *quote*?
+
+Well, (quote quote) of course, or 'quote, to make things simple. Let's
+try that:
+
+: ELISP> (describe-function 'quote)
+: ...........
+
+When you evaluate this in *ielm*, two things happen. The first is that
+a help message is displayed below the ELISP> prompt, just like for
+other evaluations, and the second is that a help buffer is separately
+opened to display the help message (that's the standard way to display
+a help message). The help buffer has a better format that I'll copy
+here:
+
+: ==========================================================================
+: quote is a special form in ‘C source code’.
+:
+: (quote ARG)
+:
+: Return the argument, without evaluating it.  ‘(quote x)’ yields ‘x’.
+: Warning: ‘quote’ does not construct its return value, but just
+: returns the value that was pre-constructed by the Lisp reader (see
+: info node ‘(elisp)Printed Representation’).
+: This means that '(a . b) is not identical to (cons 'a 'b): the former
+: does not cons.  Quoting should be reserved for constants that will
+: never be modified by side-effects, unless you like self-modifying
+: code.
+: See the common pitfall in info node ‘(elisp)Rearrangement’ for an
+: example of unexpected results when a quoted object is modified.
+: ==========================================================================
+
+The help message says what we've already discovered: *quote* is a
+special form and it takes only one argument (ARG). And what it does is
+return the argument without evaluating it. The rest of the help is a
+bit obscure and you can ignore it for now.
+
+What about describing the *describe-function* function?
+
+: ELISP> (describe-function 'describe-function)
+: ==========================================================================
+: describe-function is an interactive autoloaded compiled Lisp function
+: in ‘help-fns.el’.
+:
+: It is bound to C-h f, <f1> f, <help> f, <menu-bar> <help-menu>
+: <describe> <describe-function>.
+:
+: (describe-function FUNCTION)
+:
+: Display the full documentation of FUNCTION (a symbol).
+: ==========================================================================
+
+This help message also tells us that the argument is not ARG, as for
+*quote*, but FUNCTION, hinting at the fact that it does not take just
+any one argument, but just a function. It is also bound to a number of
+ways to access it easily, like hitting C-h f.
+
+*** Back to Quote
+
+*'rose* is actually *(quote rose)*, but the quote function is used so
+often that it was abbriddged into *'*. However, we've seen above that
+a normal function was evaluated by Emacs by evaluating all its
+elements from left to right. Here, if Emacs were to evaluate *rose*,
+it would raise an error since *rose* has not yet been associated to a
+value. So what *quote* does is tell Emacs to *not* evaluate its
+argument. *quote* is a *special form* because it's evaluation rules do
+not conform to the lisp standard. There are other special forms that
+all have specific evaluation rules.
+
+: ELISP> (quote rose)
+: rose
+
+: ELISP> (quote rose bud)
+: *** Eval error ***  Wrong number of arguments: quote, 2
+
+The quote function does not accept 2 arguments...
+
+: ELISP> (quote (rose bud))
+: (rose bud)
+*** Numbers
+**** Number or Marker
+
+We saw above that *number-or-marker-p* was actually a function that checks whether a given argument is a number or a marker, let's check its definition by using the function *describe-function*:
+
+: ELISP> (describe-function 'number-or-marker-p)
+: ==========================================================================
+: number-or-marker-p is a built-in function in ‘src/data.c’.
+:
+: (number-or-marker-p OBJECT)
+:
+: Return t if OBJECT is a number or a marker.
+:
+: [back]
+: ==========================================================================
+
+We now understand what happens when we ask Emacs to add objects. Once
+Emacs evaluates the first element of the list as being the function
+*+*, it checks whether the other elements are all numbers or markers
+by using the *number-or-marker-p* function on all the elements. If the
+function returns *t* (short for "true") then the element can be an
+argument to *+*. If there is one element for which
+*number-or-marker-p* does not return *t* (in which case the function
+would return *nil*, or eventually an error), then the addition
+evaluation stops and Emacs displays an error message.
+
+Let's see how that works with the numbers we evaluated in the first
+chapter, where we saw that 65 was equivalent to #o101, #x41 and ?A:
+
+: ELISP> (number-or-marker-p 65)
+: t
+: 
+: ELISP> (number-or-marker-p #o101)
+: t
+: 
+: ELISP> (number-or-marker-p #x41)
+: t
+: 
+: ELISP> (number-or-marker-p ?A)
+: t
+
+Now, let's see if how that works for *A*, which looks like the
+character A:
+
+: ELISP> (number-or-marker-p A)
+: nil
+
+If we evaluate *A*, we find that it is just like *rose*, a variable
+for which no value has been assigned:
+
+: ELISP> A
+: *** Eval error ***  Symbol’s value as variable is void: A
+**** +
+We already know *+*, but let check its definition:
+
+: ELISP> (describe-function '+)
+: ==========================================================================
+: + is a built-in function in ‘C source code’.
+: 
+: (+ &rest NUMBERS-OR-MARKERS)
+: 
+: Return sum of any number of arguments, which are numbers or markers.
+: ==========================================================================
+
+*+* is a standard function and &rest is a keyword that indicates that
+any number of argument can follow. The arguments are
+*numbers-or-markers*.
+
+Markers are used to specify a position in an Emacs buffer. They are
+basically numbers for a specific use case.
+
+: ELISP> (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
+: 67 (#o103, #x43, ?C)
+
+Emacs evaluates the elements one by one, so what we just did is:
+:        (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
+:     => (+ 1 2 3 (+ 4 5 6 *24* 10) 12)
+:     => (+ 1 2 3 *49* 12)
+:     => 67 (#o103, #x43, ?C)**** Some arithmetics
+
+Let's see how Emacs defines a few simple functions. We've seen *+*
+already so let's go straight to *-*.
+
+**** -
+: ELISP>  (describe-function '-)
+: 
+: ==========================================================================
+: - is a built-in function in ‘C source code’.
+: 
+: (- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
+: 
+: Negate number or subtract numbers or markers and return the result.
+: With one arg, negates it.  With more than one arg,
+: subtracts all but the first from the first.
+: ==========================================================================
+
+The first argument is optional:
+
+: ELISP> (-)
+: 0 (#o0, #x0, ?\C-@)
+
+Where there is only ne argument it is negated:
+
+: ELISP> (- 3)
+: -3 (#o377777777777777777775, #x3ffffffffffffffd)
+: ELISP> (- -3)
+: 3 (#o3, #x3, ?\C-c)
+
+When there are 2 ore more arguments, the arguments after the first are all sbtracted from the first:
+
+: ELISP> (- 3 2)
+: 1 (#o1, #x1, ?\C-a)
+: ELISP> (- 3 2 3)
+: -2 (#o377777777777777777776, #x3ffffffffffffffe)
+
+**** *
+: ELISP>  (describe-function '*)
+: 
+: ==========================================================================
+: * is a built-in function in ‘C source code’.
+: 
+: (* &rest NUMBERS-OR-MARKERS)
+: 
+: Return product of any number of arguments, which are numbers or markers.
+: ==========================================================================
+
+: ELISP> (*)
+: 1 (#o1, #x1, ?\C-a)
+
+: ELISP> (* 2)
+: 2 (#o2, #x2, ?\C-b)
+
+: ELISP> (* 2 3)
+: 6 (#o6, #x6, ?\C-f)
+
+And, by the way:
+
+: ELISP> (* 2 ?z)
+: 244 (#o364, #xf4, ?ô)
+
+**** /
+: ELISP>  (describe-function '/)
+: 
+: ==========================================================================
+: / is a built-in function in ‘C source code’.
+: 
+: (/ NUMBER &rest DIVISORS)
+: 
+: Divide number by divisors and return the result.
+: With two or more arguments, return first argument divided by the rest.
+: With one argument, return 1 divided by the argument.
+: The arguments must be numbers or markers.
+: ==========================================================================
+
+Let's try a few things:
+
+: ELISP> (/)
+: *** Eval error ***  Wrong number of arguments: /, 0
+
+The definition told us we needed one or more arguments.
+
+: ELISP> (/ 1)
+: 1 (#o1, #x1, ?\C-a)
+
+: ELISP> (/ 0)
+: *** Eval error ***  Arithmetic error
+
+Division by 0 is not allowed even in elisp.
+
+: ELISP> (/ 2)
+: 0 (#o0, #x0, ?\C-@)
+
+1 divided by 2 as integers does not result in a floating point value, but in an integer.
+
+: ELISP> (/ 2.0)
+: 0.5
+
+: ELISP> (/ 3.0)
+: 0.3333333333333333
+
+: ELISP (/ 3.0 3.0)
+: 1.0
+
+**** %
+: ELISP>  (describe-function '%)
+: 
+: ==========================================================================
+: % is a built-in function in ‘C source code’.
+: 
+: (% X Y)
+: 
+: Return remainder of X divided by Y.
+: Both must be integers or markers.
+: ==========================================================================
+
+: ELISP> (% 1)
+: *** Eval error ***  Wrong number of arguments: %, 1
+
+The function requires 2 arguments.
+
+: ELISP> (% 0 1)
+: 0 (#o0, #x0, ?\C-@)
+
+0 divided by 1 is 0 and the remainder is 0.
+
+: ELISP> (% 1 0)
+: *** Eval error ***  Arithmetic error
+
+Division by 0 is not allowed, thus there are no possibile remainders.
+
+: ELISP> (% 3 5)
+: 3 (#o3, #x3, ?\C-c)
+
+3 divided by 5 is 0 and the remainder is 3.
+
+: ELISP> (% fill-column 3)
+: 1 (#o1, #x1, ?\C-a)
+
+70 divided by 3 is 23 and the remainder is 1.
+
+**** expt, sqrt
+: ELISP>  (describe-function 'expt)
+: 
+: ==========================================================================
+: expt is a built-in function in ‘src/floatfns.c’.
+: 
+: (expt ARG1 ARG2)
+: 
+: Return the exponential ARG1 ** ARG2.
+: ==========================================================================
+
+
+: ELISP>  (describe-function 'sqrt)
+: 
+: ==========================================================================
+: sqrt is a built-in function in ‘src/floatfns.c’.
+: 
+: (sqrt ARG)
+: 
+: Return the square root of ARG.
+: ==========================================================================
+
+: ELISP> (expt 0 0)
+: 1 (#o1, #x1, ?\C-a)
+: 
+: ELISP> (expt 1 0)
+: 1 (#o1, #x1, ?\C-a)
+
+: ELISP> (expt 0 1)
+: 0 (#o0, #x0, ?\C-@)
+
+: ELISP> (expt 2 8)
+: 256 (#o400, #x100, ?Ā)
+
+: ELISP> (expt 2 1.5)
+: 2.8284271247461903
+
+: ELISP> (sqrt (expt 2 3))
+: 2.8284271247461903
+*** TODO Strings (add more string related functions)
+**** Sending messages
+
+: (describe-function 'message)
+
+: (message FORMAT-STRING &rest ARGS)
+: 
+: Display a message at the bottom of the screen.
+: The message also goes into the ‘*Messages*’ buffer, if ‘message-log-max’
+: is non-nil.  (In keyboard macros, that’s all it does.)
+: Return the message.
+
+FORMAT-STRING is a new type of argument. If you check the Emacs Lisp Reference, you'll see that it's a string that can accept modifications based on special characters that it includes and on the values of ARGS:
+
+: ELISP> (message "I am not yet %d years old." fill-column)
+: "I am not yet 70 years old."
+
+: ELISP> (message "The octal value of %d is %o, its hexadecimal value is %x and the character it represents is %c." 65 65 65 65)
+: 
+: "The octal value of 65 is 101, its hexadecimal value is 41 and the character it represents is A."
+*** TODO Buffers (add more buffer related functions)
+*** TODO General (add more general functions)
+**** Testing types
+Elisp has a lot of types for its arguments. You can check them all in
+the Elisp Reference Manual [2.7 Type Predicates]. We've seen two
+already: *number-or-marker-p* and *stringp*. The manual suggests that
+we can check whether an object is an atom or not:
+
+: ELISP> (atom 65)
+: t
+: ELISP> (atom ?a)
+: t
+: ELISP> (atom "rose")
+: t
+: ELISP> (atom 'rose)
+: t
+: ELISP> (atom rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
+
+*rose* has no value assigned so Emacs can't tell whether it's an atom
+or not.
+
+: ELISP> (atom '(65 "rose" fill-column))
+: nil
+
+A *list* is not an *atom*, except for this list:
+
+: ELISP> (atom '())
+: t
+
+The *empty list* is an atom.
+
+What about lists?
+
+: ELISP> (listp 65)
+: nil
+: ELISP> (listp (65))
+: *** Eval error ***  Invalid function: 65
+
+The first element of an unquoted list is always expected to be a
+function. Since it is not, Emacs has no way to properly evaluate that
+object.
+
+: ELISP> (listp '(65))
+: t
+: ELISP> (listp '())
+: t
+
+Ok, now what about *t* and *nil* themselves?
+
+: ELISP> (atom nil)
+: t
+: ELISP> (listp nil)
+: t
+
+*nil* is both an atom and a list...
+
+: ELISP> (atom t)
+: t
+: ELISP> (listp t)
+: nil
+
+A quick look at the Emacs Lisp Reference Manual's index shows an entry
+for *nil* where both *t* and *nil* are explained. There, we see that
+*nil* and *()* (the empty list) are one and the same thing. Hence,
+*nil* is an atom as well as being a list.
+
+It's interesting to see that there is no type checking function for
+sexps. sexps are defined as "any Lisp object that can be printed and
+read back". So there is no point checking whether an object is a sexp
+or not, they all are.
+
+** Creating your own variables and functions
+*** Assigning values to your symbols
+
+We need a function that works like this:
+
+: (set [this symbol] [as holding this value])
+
+It happens that there is a *set* function:
+
+: (describe-function 'set)
+: 
+: (set SYMBOL NEWVAL)
+: 
+: Set SYMBOL’s value to NEWVAL, and return NEWVAL.
+
+*set* requires a SYMBOL, so let's see what symbols we have already:
+
+: ELISP> (symbolp rose)
+: *** Eval error ***  Symbol’s value as variable is void: rose
+
+*rose* is a symbol, but since *symbolp* is a normal function, it
+*first* evaluates its arguments before doing anything on them, if
+there is an error with *rose* because it does not evaluate to
+something that *symbolp* can work with, we need to feed *symbolp* with
+something that *once evaluated* will be the symbol *rose*...
+
+: ELISP> (symbolp (quote rose))
+: t
+
+Et voilà! (quote rose) properly evaluates to *rose* and *rose* is a
+symbol (although without a value at the moment), so we can now feed
+*'rose* to *set* along with a value:
+
+: ELISP> (set 'rose "a beautiful flower")
+: "a beautiful flower"
+
+Et voilà again! Now we can at last see what *rose* is:
+
+: ELISP> rose
+: "a beautiful flower"
+
+Note how we do not have an error message anymore...
+
+: ELISP> (message "A rose is %s." rose)
+: "a rose is a beautiful flower"
+
+And note how *rose* can now fully be deployed anywhere we need it.
+
+Although adding the *'* is trivial, it is easy to forget it and to
+generate errors. To avoid this, there is *setq*. *setq* does not
+evaluate it's first argument. As such, it is not a normal
+function. Like *quote*, it is a special form.
+
+: ELISP> (set violet "a beautiful flower")
+: *** Eval error ***  Wrong type argument: symbolp, "A violet is also a beautiful flower."
+
+This would not work, but we knew it.
+
+: ELISP> (setq violet "a beautiful flower")
+: "a beautiful flower"
+
+This works because with *setq*, there is no need to quote *violet*.
+
+: ELISP> (message "A %s is also %s." 'violet violet)
+: "A violet is also a beautiful flower"
+
+Both *set* and *setq* can be used to set values to symbols that
+already have values, but we'll only use *setq* here because it is more
+convenient:
+
+: ELISP> rose
+: "a beautiful flower"
+: ELISP> (setq rose "the name of a famous singer")
+: "the name of a famous singer"
+: ELISP> (message "Rose is no more a flower. It is now %s." rose)
+: "Rose is no more a flower. It is now the name of a famous singer."
+
+And we can use anything as the second argument:
+
+: ELISP> violet
+: "a beautiful flower"
+: ELISP> (setq violet (message "A %s is also %s." 'violet violet))
+: "A violet is also a beautiful flower."
+: ELISP> violet
+: "A violet is also a beautiful flower."
+
+*** Assigning functions to your symbols
+* ===================================================================
+* 2e essai, copié sur ANSI Common Lisp
+
+: > 1
+:  1 (#o1, #x1, ?\C-a)
+
+  => 1 is equivalent to octal/hexadecimal/character C-a
+
+: > (+ 2 3)
+:  5 (#o5, #x5, ?\C-e)
+
+  => + is the operator, 2 and 3 are the arguments
+* GNU Free Documentation License
+                GNU Free Documentation License
+                 Version 1.3, 3 November 2008
+
+
+ Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+     <http://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+0. PREAMBLE
+
+The purpose of this License is to make a manual, textbook, or other
+functional and useful document "free" in the sense of freedom: to
+assure everyone the effective freedom to copy and redistribute it,
+with or without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible
+for modifications made by others.
+
+This License is a kind of "copyleft", which means that derivative
+works of the document must themselves be free in the same sense.  It
+complements the GNU General Public License, which is a copyleft
+license designed for free software.
+
+We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free
+program should come with manuals providing the same freedoms that the
+software does.  But this License is not limited to software manuals;
+it can be used for any textual work, regardless of subject matter or
+whether it is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or reference.
+
+
+1. APPLICABILITY AND DEFINITIONS
+
+This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License.  Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein.  The "Document", below,
+refers to any such manual or work.  Any member of the public is a
+licensee, and is addressed as "you".  You accept the license if you
+copy, modify or distribute the work in a way requiring permission
+under copyright law.
+
+A "Modified Version" of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.
+
+A "Secondary Section" is a named appendix or a front-matter section of
+the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document's overall
+subject (or to related matters) and contains nothing that could fall
+directly within that overall subject.  (Thus, if the Document is in
+part a textbook of mathematics, a Secondary Section may not explain
+any mathematics.)  The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding
+them.
+
+The "Invariant Sections" are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice
+that says that the Document is released under this License.  If a
+section does not fit the above definition of Secondary then it is not
+allowed to be designated as Invariant.  The Document may contain zero
+Invariant Sections.  If the Document does not identify any Invariant
+Sections then there are none.
+
+The "Cover Texts" are certain short passages of text that are listed,
+as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+the Document is released under this License.  A Front-Cover Text may
+be at most 5 words, and a Back-Cover Text may be at most 25 words.
+
+A "Transparent" copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the
+general public, that is suitable for revising the document
+straightforwardly with generic text editors or (for images composed of
+pixels) generic paint programs or (for drawings) some widely available
+drawing editor, and that is suitable for input to text formatters or
+for automatic translation to a variety of formats suitable for input
+to text formatters.  A copy made in an otherwise Transparent file
+format whose markup, or absence of markup, has been arranged to thwart
+or discourage subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount
+of text.  A copy that is not "Transparent" is called "Opaque".
+
+Examples of suitable formats for Transparent copies include plain
+ASCII without markup, Texinfo input format, LaTeX input format, SGML
+or XML using a publicly available DTD, and standard-conforming simple
+HTML, PostScript or PDF designed for human modification.  Examples of
+transparent image formats include PNG, XCF and JPG.  Opaque formats
+include proprietary formats that can be read and edited only by
+proprietary word processors, SGML or XML for which the DTD and/or
+processing tools are not generally available, and the
+machine-generated HTML, PostScript or PDF produced by some word
+processors for output purposes only.
+
+The "Title Page" means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page.  For works in
+formats which do not have any title page as such, "Title Page" means
+the text near the most prominent appearance of the work's title,
+preceding the beginning of the body of the text.
+
+The "publisher" means any person or entity that distributes copies of
+the Document to the public.
+
+A section "Entitled XYZ" means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language.  (Here XYZ stands for a
+specific section name mentioned below, such as "Acknowledgements",
+"Dedications", "Endorsements", or "History".)  To "Preserve the Title"
+of such a section when you modify the Document means that it remains a
+section "Entitled XYZ" according to this definition.
+
+The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document.  These Warranty
+Disclaimers are considered to be included by reference in this
+License, but only as regards disclaiming warranties: any other
+implication that these Warranty Disclaimers may have is void and has
+no effect on the meaning of this License.
+
+2. VERBATIM COPYING
+
+You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies
+to the Document are reproduced in all copies, and that you add no
+other conditions whatsoever to those of this License.  You may not use
+technical measures to obstruct or control the reading or further
+copying of the copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a large enough
+number of copies you must also follow the conditions in section 3.
+
+You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.
+
+
+3. COPYING IN QUANTITY
+
+If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document's license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover
+Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+the back cover.  Both covers must also clearly and legibly identify
+you as the publisher of these copies.  The front cover must present
+the full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in addition.
+Copying with changes limited to the covers, as long as they preserve
+the title of the Document and satisfy these conditions, can be treated
+as verbatim copying in other respects.
+
+If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.
+
+If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy
+a computer-network location from which the general network-using
+public has access to download using public-standard network protocols
+a complete Transparent copy of the Document, free of added material.
+If you use the latter option, you must take reasonably prudent steps,
+when you begin distribution of Opaque copies in quantity, to ensure
+that this Transparent copy will remain thus accessible at the stated
+location until at least one year after the last time you distribute an
+Opaque copy (directly or through your agents or retailers) of that
+edition to the public.
+
+It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to
+give them a chance to provide you with an updated version of the
+Document.
+
+
+4. MODIFICATIONS
+
+You may copy and distribute a Modified Version of the Document under
+the conditions of sections 2 and 3 above, provided that you release
+the Modified Version under precisely this License, with the Modified
+Version filling the role of the Document, thus licensing distribution
+and modification of the Modified Version to whoever possesses a copy
+of it.  In addition, you must do these things in the Modified Version:
+
+A. Use in the Title Page (and on the covers, if any) a title distinct
+   from that of the Document, and from those of previous versions
+   (which should, if there were any, be listed in the History section
+   of the Document).  You may use the same title as a previous version
+   if the original publisher of that version gives permission.
+B. List on the Title Page, as authors, one or more persons or entities
+   responsible for authorship of the modifications in the Modified
+   Version, together with at least five of the principal authors of the
+   Document (all of its principal authors, if it has fewer than five),
+   unless they release you from this requirement.
+C. State on the Title page the name of the publisher of the
+   Modified Version, as the publisher.
+D. Preserve all the copyright notices of the Document.
+E. Add an appropriate copyright notice for your modifications
+   adjacent to the other copyright notices.
+F. Include, immediately after the copyright notices, a license notice
+   giving the public permission to use the Modified Version under the
+   terms of this License, in the form shown in the Addendum below.
+G. Preserve in that license notice the full lists of Invariant Sections
+   and required Cover Texts given in the Document's license notice.
+H. Include an unaltered copy of this License.
+I. Preserve the section Entitled "History", Preserve its Title, and add
+   to it an item stating at least the title, year, new authors, and
+   publisher of the Modified Version as given on the Title Page.  If
+   there is no section Entitled "History" in the Document, create one
+   stating the title, year, authors, and publisher of the Document as
+   given on its Title Page, then add an item describing the Modified
+   Version as stated in the previous sentence.
+J. Preserve the network location, if any, given in the Document for
+   public access to a Transparent copy of the Document, and likewise
+   the network locations given in the Document for previous versions
+   it was based on.  These may be placed in the "History" section.
+   You may omit a network location for a work that was published at
+   least four years before the Document itself, or if the original
+   publisher of the version it refers to gives permission.
+K. For any section Entitled "Acknowledgements" or "Dedications",
+   Preserve the Title of the section, and preserve in the section all
+   the substance and tone of each of the contributor acknowledgements
+   and/or dedications given therein.
+L. Preserve all the Invariant Sections of the Document,
+   unaltered in their text and in their titles.  Section numbers
+   or the equivalent are not considered part of the section titles.
+M. Delete any section Entitled "Endorsements".  Such a section
+   may not be included in the Modified Version.
+N. Do not retitle any existing section to be Entitled "Endorsements"
+   or to conflict in title with any Invariant Section.
+O. Preserve any Warranty Disclaimers.
+
+If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no material
+copied from the Document, you may at your option designate some or all
+of these sections as invariant.  To do this, add their titles to the
+list of Invariant Sections in the Modified Version's license notice.
+These titles must be distinct from any other section titles.
+
+You may add a section Entitled "Endorsements", provided it contains
+nothing but endorsements of your Modified Version by various
+parties--for example, statements of peer review or that the text has
+been approved by an organization as the authoritative definition of a
+standard.
+
+You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version.  Only one passage of
+Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity.  If the Document already
+includes a cover text for the same cover, previously added by you or
+by arrangement made by the same entity you are acting on behalf of,
+you may not add another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.
+
+The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.
+
+
+5. COMBINING DOCUMENTS
+
+You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its
+license notice, and that you preserve all their Warranty Disclaimers.
+
+The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy.  If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by
+adding at the end of it, in parentheses, the name of the original
+author or publisher of that section if known, or else a unique number.
+Make the same adjustment to the section titles in the list of
+Invariant Sections in the license notice of the combined work.
+
+In the combination, you must combine any sections Entitled "History"
+in the various original documents, forming one section Entitled
+"History"; likewise combine any sections Entitled "Acknowledgements",
+and any sections Entitled "Dedications".  You must delete all sections
+Entitled "Endorsements".
+
+
+6. COLLECTIONS OF DOCUMENTS
+
+You may make a collection consisting of the Document and other
+documents released under this License, and replace the individual
+copies of this License in the various documents with a single copy
+that is included in the collection, provided that you follow the rules
+of this License for verbatim copying of each of the documents in all
+other respects.
+
+You may extract a single document from such a collection, and
+distribute it individually under this License, provided you insert a
+copy of this License into the extracted document, and follow this
+License in all other respects regarding verbatim copying of that
+document.
+
+
+7. AGGREGATION WITH INDEPENDENT WORKS
+
+A compilation of the Document or its derivatives with other separate
+and independent documents or works, in or on a volume of a storage or
+distribution medium, is called an "aggregate" if the copyright
+resulting from the compilation is not used to limit the legal rights
+of the compilation's users beyond what the individual works permit.
+When the Document is included in an aggregate, this License does not
+apply to the other works in the aggregate which are not themselves
+derivative works of the Document.
+
+If the Cover Text requirement of section 3 is applicable to these
+copies of the Document, then if the Document is less than one half of
+the entire aggregate, the Document's Cover Texts may be placed on
+covers that bracket the Document within the aggregate, or the
+electronic equivalent of covers if the Document is in electronic form.
+Otherwise they must appear on printed covers that bracket the whole
+aggregate.
+
+
+8. TRANSLATION
+
+Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section 4.
+Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections.  You may include a
+translation of this License, and all the license notices in the
+Document, and any Warranty Disclaimers, provided that you also include
+the original English version of this License and the original versions
+of those notices and disclaimers.  In case of a disagreement between
+the translation and the original version of this License or a notice
+or disclaimer, the original version will prevail.
+
+If a section in the Document is Entitled "Acknowledgements",
+"Dedications", or "History", the requirement (section 4) to Preserve
+its Title (section 1) will typically require changing the actual
+title.
+
+
+9. TERMINATION
+
+You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense, or distribute it is void, and
+will automatically terminate your rights under this License.
+
+However, if you cease all violation of this License, then your license
+from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.
+
+Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+
+Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, receipt of a copy of some or all of the same material does
+not give you any rights to use it.
+
+
+10. FUTURE REVISIONS OF THIS LICENSE
+
+The Free Software Foundation may publish new, revised versions of the
+GNU Free Documentation License from time to time.  Such new versions
+will be similar in spirit to the present version, but may differ in
+detail to address new problems or concerns.  See
+http://www.gnu.org/copyleft/.
+
+Each version of the License is given a distinguishing version number.
+If the Document specifies that a particular numbered version of this
+License "or any later version" applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation.  If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.  If the Document
+specifies that a proxy can decide which future versions of this
+License can be used, that proxy's public statement of acceptance of a
+version permanently authorizes you to choose that version for the
+Document.
+
+11. RELICENSING
+
+"Massive Multiauthor Collaboration Site" (or "MMC Site") means any
+World Wide Web server that publishes copyrightable works and also
+provides prominent facilities for anybody to edit those works.  A
+public wiki that anybody can edit is an example of such a server.  A
+"Massive Multiauthor Collaboration" (or "MMC") contained in the site
+means any set of copyrightable works thus published on the MMC site.
+
+"CC-BY-SA" means the Creative Commons Attribution-Share Alike 3.0 
+license published by Creative Commons Corporation, a not-for-profit 
+corporation with a principal place of business in San Francisco, 
+California, as well as future copyleft versions of that license 
+published by that same organization.
+
+"Incorporate" means to publish or republish a Document, in whole or in 
+part, as part of another Document.
+
+An MMC is "eligible for relicensing" if it is licensed under this 
+License, and if all works that were first published under this License 
+somewhere other than this MMC, and subsequently incorporated in whole or 
+in part into the MMC, (1) had no cover texts or invariant sections, and 
+(2) were thus incorporated prior to November 1, 2008.
+
+The operator of an MMC Site may republish an MMC contained in the site
+under CC-BY-SA on the same site at any time before August 1, 2009,
+provided the MMC is eligible for relicensing.
+
+
+ADDENDUM: How to use this License for your documents
+
+To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and
+license notices just after the title page:
+
+    Copyright (c)  YEAR  YOUR NAME.
+    Permission is granted to copy, distribute and/or modify this document
+    under the terms of the GNU Free Documentation License, Version 1.3
+    or any later version published by the Free Software Foundation;
+    with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+    A copy of the license is included in the section entitled "GNU
+    Free Documentation License".
+
+If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
+replace the "with...Texts." line with this:
+
+    with the Invariant Sections being LIST THEIR TITLES, with the
+    Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
+
+If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+
+If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License,
+to permit their use in free software.
+* Notes
+** TODO distinction entre "form" "expression" "symbolic expression" "sexp"
+check definition of sexp/s-expression/symbolic expression/expression/form
+1.3.3 "a lisp expression that you can evaluate is called a form"
+no reference to "symbolic expression"
+sexp appears first in "customization types" 14.4.1
+in emacs manual, definition of sexp appears in 26.4.1
+in ItPiEL, it appears in 1.3
+"The printed representation of both atoms and lists are called symbolic expressions or, more concisely, s-expressions. The word expression by itself can refer to either the printed representation, or to the atom or list as it is held internally in the computer. Often, people use the term expression indiscriminately. (Also, in many texts, the word form is used as a synonym for expression.)"
+** TODO (quote rose) équivalent à 'rose => rose
+** TODO autres fonctions arithmétiques
+** TODO introduction à IELM
+** TODO exercices ?
+** introduction de defun avant sa définition...
+introduction en 2.6 Type Predicates
+première définition en 8.2
+définition formelle en 12.4
+** DONE number-or-marker-p
+** TODO créer ses propres fonctions
+** TODO définir ses variables
+** TODO différence entre A et ?A
+** Introduction à emacs lisp par Aaron Bieber
