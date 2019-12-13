@@ -212,22 +212,12 @@ You may wonder about the ? before A. This is just a convention to say
 is called A".
 
 All the returned values are equivalent:
-<<<<<<< HEAD
-1114111, but the
-character is not displayable on my screen, I only see: "?􏿿 ".
- ELISP> #o101
- 65 (#o101, #x41, ?A)
-500
- Elisp> #x41
- 65 (#o101, #x41, ?A)
-=======
 
 : ELISP> #o101
 : 65 (#o101, #x41, ?A)
 
 : ELISP> #x41
 : 65 (#o101, #x41, ?A)
->>>>>>> 0778a684fdfe20537648f2d69f6582e3a9eab6bf
 
 : ELISP> ?A
 : 65 (#o101, #x41, ?A)
