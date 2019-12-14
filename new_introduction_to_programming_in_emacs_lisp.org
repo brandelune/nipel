@@ -69,8 +69,8 @@ Don't worry about what that means, just dismiss the message right away
 by hitting *q*.
 
 You will mostly be using elisp within Emacs. When you start Emacs, you
-can use the *scratch* buffer to type and evaluate elisp code. You can
-read this document in a separate window, type the code in the scratch
+can use the *=*scratch*=* buffer to type and evaluate elisp code. You can
+read this document in a separate window, type the code in the *=*scratch*=*
 buffer and evaluate it with *C-x C-e* to see the results in the echo
 area (just below the mode line, at the bottom of the window). If you
 read this document in Emacs, you can also evaluate all the code
@@ -87,7 +87,7 @@ appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
 worry about what either mean. We just need to see that things work.
 
 Now that we know that things work fine, we need to find a convenient
-way to type some code and make it run. Instead of using the scratch
+way to type some code and make it run. Instead of using the *=*scratch*=*
 buffer, we will use a mode especially designed for elisp. In that
 mode, when you type your elisp code followed by *Enter* (no need for C-x
 C-e), Emacs shows you immediately the result of the code right under
