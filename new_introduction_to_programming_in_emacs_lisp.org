@@ -11,62 +11,84 @@ Documentation License”.
 ** Introduction to the environment
 *** Emacs Lisp and Emacs
 Emacs Lisp (abreviated Elisp) is a programming language of the Lisp
-family and is mostly used in Emacs. This introduction is based on
-Robert J. Chassel's Introduction to Programming in Emacs Lisp and
-tries to cover the same ground. It does not assume that you have an
-experience in programming but that you at least know the basics of
-Emacs. If that is not the case, take the time to go through the Emacs
-tutorial. If you read this document in Emacs, you can type C-h t (the
-"Control" key and the "h" key together, followed by "t" key) to open
-the tutorial.
+family and is mostly used in Emacs.
 
-Emacs is mostly written in Elisp. Emacs extensions (modes) are written
-in Elisp. You can write external programs and execute them from the
-command line by using Emacs as the interpreter. Elisp is a Lisp that's
-designed as an extension language to Emacs and but you can also use it
-as a general purpose language. Elisp comes with functions dedicated to
-text editing in Emacs, it also comes with data structures that
-directly reflect Emacs objects (a buffer, a window, a character
-stream, a font...) along with standard data structures that can be
-found in other languages (an integer, a floating number, a string...)
+This introduction is based on Robert J. Chassel's Introduction to
+Programming in Emacs Lisp and tries to cover the same ground.
 
-If you want to work efficiently in Emacs, knowledge of Elisp will help
-you considerably. If you want to learn a new language that's
-relatively straightforward, Elisp is a good choice. Also, Elisp is a
-good introduction to other Lisp languages (Scheme, Common Lisp) that
-have applications outside the world of text editing (and you can
-program in such languages within Emacs, through dedicated extensions
-writen in Elisp...)
+When you have completed this introduction, you will be able to use
+Elisp for your daily programming tasks and you will be able to find
+the information you need for other tasks in the various existing
+reference documents.
+
+This introduction assumes that you know the basics of Emacs. If that
+is not the case, enter the tutorial from the Emacs Help menu.
+
+Elisp can be used as a general purpose language. But Elisp is also a
+Lisp that's designed as an extension language to Emacs.
+
+Elisp thus comes with functions dedicated to text editing in Emacs,
+and with data structures that directly reflect Emacs objects (a
+buffer, a window, a character stream, a font...)
+
+Knowing Elisp will allow you to create programs that help you work in
+Emacs, and will also allow you to create programs for your own special
+purposes.
+
+Elisp is a good introduction to other Lisp languages that are widely
+used in the industry or in academia (Scheme, Common Lisp, etc.). And
+you can program in such languages within Emacs, through dedicated
+extensions writen in Elisp...
 
 *** Emacs Lisp in Emacs
 **** Running the code
 Emacs is an environment where you can write Elisp code and evaluate it
-right away. If you hit *C-x C-e* (press the *control* key, hold it and
-press the *x* key, release both, press the *control* key, hold it and
-press the *e* key, release both) after a code expression, Emacs will
-evaluate the expression that is just before the cursor. You can do
-that anywhere but if the strings before the cursor are not valid code
-Emacs will open an error buffer to tell you that something is
-wrong. You can dismiss that buffer by hitting *q*, and you'll be back
-the your original buffer.
+right away.
 
-You can actually try this here. Put the cursor *anywhere* in this
-paragraph and hit *C-x C-e* as I just wrote. You'll see an error message
-appear in the bottom half of the window. Depending on where the cursor
-was the message will differ but it should look like:
+To evaluate your work:
 
-: ====================================================
-: Debugger entered--Lisp error: (void-variable cursor)
-:  eval(cursor nil)
-:  elisp--eval-last-sexp(nil)
-:  eval-last-sexp(nil)
-:  funcall-interactively(eval-last-sexp nil)
-:  call-interactively(eval-last-sexp nil nil)
-:  command-execute(eval-last-sexp)
-: ====================================================
+put the cursor right after the work and
+- press the *control* key
+- while you hold the *control* key pressed
+- press the *x* key
+release both keys, then
+- press the *control* key again
+- while you hold the *control* key pressed
+- press the *e* key
+and release both
 
-Don't worry about what that means, just dismiss the message right away
+This operation is summarized as *C-x C-e*. Go back to the Emacs
+Tutorial if you are not confident that you understand the meaning of
+such shortcuts descriptions.
+
+You can evaluate your code anywhere in Emacs.
+
+If the strings before the cursor are not valid code, Emacs will tell
+you why the code could not be evaluated by opening an error buffer.
+
+You can dismiss that error buffer and return to your original buffer
 by hitting *q*.
+
+Try this here.
+
+Put the cursor *anywhere* in this paragraph and hit *C-x C-e*. The
+error message that appears will depend on the position of the cursor
+but it should look like this:
+
+: ====================================================
+: Debugger entered--Lisp error: (void-variable position)
+:   eval(position nil)
+:   elisp--eval-last-sexp(nil)
+:   eval-last-sexp(nil)
+:   funcall-interactively(eval-last-sexp nil)
+:   call-interactively(eval-last-sexp nil nil)
+:   command-execute(eval-last-sexp)
+: ====================================================
+
+The message "(void-variable position)" indicates that my cursor was
+just after the word "position". The meaning of the message will be
+explained in the next section so for now just dismiss it by hitting
+*q*.
 
 You will mostly be using Elisp within Emacs. When you start Emacs, you
 can use the *=*scratch*=* buffer to type and evaluate Elisp code. You can
