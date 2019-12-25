@@ -90,37 +90,37 @@ just after the word "position". The meaning of the message will be
 explained in the next section so for now just dismiss it by hitting
 *q*.
 
-You will mostly be using Elisp within Emacs. When you start Emacs, you
-can use the *=*scratch*=* buffer to type and evaluate Elisp code. You can
-read this document in a separate window, type the code in the *=*scratch*=*
-buffer and evaluate it with *C-x C-e* to see the results in the echo
-area (just below the mode line, at the bottom of the window). If you
-read this document in Emacs, you can also evaluate all the code
-directly with *C-x C-e*.
+In Emacs, you can use the *=*scratch*=* buffer to test Elisp code. The
+*=*scratch*=* is a special buffer: Emacs will not ask you to save its
+contents if you kill it or if you quit Emacs. So never ever use it
+store information that you need to keep. Consider it as just temporary
+*scratch* pad on which you jot down ideas to work on later in
+dedicated buffers.
 
-You can try that right away. Put the cursor after the right
-parenthesis, anywhere on the line where the expression *(+ 2 3)* is
-written below:
+To know more about the *=*scratch*=* buffer, check [27.10 Lisp
+Interaction Buffers] in the Emacs manual.
+
+Let's evaluate now something that we know works. Either type the
+expression *(+ 2 3)* in the **=*scratch*=* buffer and put the cursor
+after the right parenthesis, or just put the cursor anywhere on the
+line where the expression *(+ 2 3)* is written below:
 
 : (+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
 
-And hit *C-x C-e* the way I indicated above. You should see something
-appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
-worry about what either mean. We just need to see that things work.
+Hit *C-x C-e*. You should see something appear at the bottom of
+this window, like "5 (#o5, #x5, ?\C-e)".
 
-Now that we know that things work fine, we need to find a convenient
-way to type some code and make it run. Instead of using the *=*scratch*=*
-buffer, we will use a mode especially designed for Elisp. In that
-mode, when you type your Elisp code followed by *Enter* (no need for C-x
-C-e), Emacs shows you immediately the result of the code right under
-the code, and displays a new prompt so that you can type some other
-Elisp code right away.
+Just like for the error message above, don't worry about what that
+mean. We just need to see that things work.
 
-That interactive mode is the "Inferior Emacs Lisp Mode". It comes
-preinstalled in Emacs and you can start it by typing *M-x ielm*. Before
-you do that, type *C-x 2* to split your emacs frame in 2 horizontaly
-stacked windows, enter the other window with *C-x o* and then launch
-ielm with *M-x ielm*.
+As indicated in the [27.10 Lisp Interaction Buffers] of the Emacs
+manual, it is possible to use the "Inferior Emacs Lisp Mode" that
+comes preinstalled in Emacs.
+
+Before starting it, type *C-x 2* to split your emacs frame in 2
+horizontaly stacked windows, enter the other window with *C-x o* and
+then launch ielm with *M-x ielm*. Here, *C-x C-e* is not necessary,
+you just need to hit *Return* after an expression to evaluate it.
 
 **** Documentation and references
 
@@ -137,21 +137,25 @@ right when we do it. That way you'll be able to learn right away how
 to discover new things, all by yourself.
 
 *** Learning Emacs Lisp
-You can only learn by typing code, making mistakes, learning from the
-mistakes and typing even more code. To follow this introduction, type
-all the code in your ielm buffer, evaluate it, try new things, read
-the error messages and try to learn from them.
+You can only learn by typing code, making mistakes, understanding the
+mistakes and typing more code.
+
+To follow this introduction, type all the code in your ielm buffer,
+evaluate it, try new things, read the error messages and try to learn
+from them.
 
 Open a separate buffer and take notes in it. You can write code in
 that separate buffer and evaluate it with *C-x C-e* to confirm that
-you understood how the code worked. Remember that you can write Elisp
-code pretty much *anywhere* in Emacs and evaluate it right away. Emacs
-is a fantastic environment to learn programming because it reacts
-right away to your Elisp code. You can see right away the result of
-what you're doing, and if it went wrong you can learn from the error
-message that Emacs displays, you can correct your code and you can
-make it run with the expected result right away ("right away" is
-relative to your understanding of Elisp, of course).
+you understood how the code worked.
+
+Remember that you can write Elisp code pretty much *anywhere* in Emacs
+and evaluate it on the spot. Emacs is a fantastic environment to learn
+programming because it reacts immediately to your Elisp code. You can
+see right away the result of what you're doing, and if it went wrong
+you can learn from the error message that Emacs displays, you can
+correct your code and you can make it run with the expected result
+instantly ("instantly" being relative to your understanding of Elisp,
+of course).
 
 ** The elements of Elisp
 *** Expressions
