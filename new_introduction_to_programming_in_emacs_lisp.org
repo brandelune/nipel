@@ -124,17 +124,13 @@ you just need to hit *Return* after an expression to evaluate it.
 
 **** Documentation and references
 
-Emacs gives you access to all its documentation from any
-location. That documentation includes everything you need to know
-about elisp. While you read this document and practice, you can open
-the Emacs Lisp Reference in a separate buffer and refer to it when you
-want to further understand a specific topic. To do that hit *C-h i* to
-open the global info manual and go the the [* Elisp: (elisp).  The
-Emacs Lisp Reference Manual.] item.
+Emacs gives you access to all its documentation from any location. You
+can open the Emacs Lisp Reference in a separate buffer and refer to it
+when you want to further understand a specific topic. To do that hit
+*C-h i* to open the global info manual and hit Enter on the [* Elisp:
+(elisp).  The Emacs Lisp Reference Manual.] item.
 
-We'll also use various methods to find information about what we do,
-right when we do it. That way you'll be able to learn right away how
-to discover new things, all by yourself.
+The minimal command set you need to master to find your way in an Info manual is
 
 *** Learning Emacs Lisp
 You can only learn by typing code, making mistakes, understanding the
