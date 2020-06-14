@@ -101,7 +101,7 @@ To know more about the *=*scratch*=* buffer, check [27.10 Lisp
 Interaction Buffers] in the Emacs manual.
 
 Let's evaluate now something that we know works. Either type the
-expression *(+ 2 3)* in the **=*scratch*=* buffer and put the cursor
+expression *(+ 2 3)* in the *=*scratch*=* buffer and put the cursor
 after the right parenthesis, or just put the cursor anywhere on the
 line where the expression *(+ 2 3)* is written below:
 
@@ -127,7 +127,7 @@ you just need to hit *Return* after an expression to evaluate it.
 Emacs gives you access to all its documentation from any location. You
 can open the Emacs Lisp Reference in a separate buffer and refer to it
 when you want to further understand a specific topic. To do that hit
-*C-h i* to open the global info manual and hit Enter on the [* Elisp:
+*C-h i* to open the global info manual and hit *Enter* on the [* Elisp:
 (elisp).  The Emacs Lisp Reference Manual.] item.
 
 The minimal command set you need to master to find your way in an Info manual is
