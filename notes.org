@@ -1,0 +1,9 @@
+* C-h l view-lossage
+if something unexpected happens after you hit keys and you want to know what it was, use *C-h l* to have emacs display the last 300 keystrokes that you type along with the associated commands.
+* Help in emacs
+C-h b current key bindings for focus buffer
+C-h m describe mode
+(prefix) C-h show all keybindings starting with (prefix)
+
+* eval-print-last-sexp
+*C-c e*
