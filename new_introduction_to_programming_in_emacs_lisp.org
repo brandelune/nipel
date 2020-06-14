@@ -10,226 +10,215 @@ Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
 copy of the license is included in the section entitled “GNU Free
 Documentation License”.
 * A New Introduction to Programming in Emacs Lisp
+** About this document
+Emacs Lisp (abreviated elisp) is a programming language of the Lisp
+family and is mostly used within Emacs[fn:1]. This introduction is
+based on Robert J. Chassel's Introduction to Programming in Emacs Lisp
+and tries to cover the same ground, but in a different way.
+** Assumptions
+This tutorial assumes that you know the basics of navigating Emacs.
+If that is not the case, take about 15 minutes to go through the Emacs
+tutorial. If you read this document in Emacs, you can type *C-h t* (the
+*Control* key and the *h* key together, followed by the *t* key) to open the
+tutorial.
+This tutorial also assumes that you have some basic computer litteracy and know your way around a computer (well, you would not be using emacs if that were not the case).
+** Target readership
+- You are interested in knowing more about Emacs, and for that you need to know more about Emacs Lisp.
+- You do not have any formal computer science training, you are just an amateur computer user.
+- If you have some non trivial programming experience, you'd better  try to apply that experience to Emacs Lisp by just reading code and trying to undertand it with the Emacs Lisp Reference.
 ** Introduction to the environment
-*** Emacs Lisp and Emacs
-Emacs Lisp (abreviated Elisp) is a programming language of the Lisp
-family and is mostly used in Emacs.
+*** Emacs Lisp and Emacs and Lisps
+Emacs is written mostly in elisp. Historically, Emacs was concieved as
+a virtual lisp machine[fn:3], editing functions were thus Lisp code editing
+functions.
 
-This introduction is based on Robert J. Chassel's Introduction to
-Programming in Emacs Lisp and tries to cover the same ground.
+Emacs extensions (modes, or elisp applications) are written in
+elisp. It is possible to write external programs and execute them from
+the command line by using Emacs as the interpreter.
 
-When you have completed this introduction, you will be able to use
-Elisp for your daily programming tasks and you will be able to find
-the information you need for other tasks in the various existing
-reference documents.
+Elisp comes with data structures that directly reflect Emacs objects
+(a buffer, a window, a character stream, a font...) along with
+standard data structures that can be found in other languages (an
+integer, a floating number, a string...)
 
-This introduction assumes that you know the basics of Emacs. If that
-is not the case, enter the tutorial from the Emacs Help menu.
-
-Elisp can be used as a general purpose language. But Elisp is also a
-Lisp that's designed as an extension language to Emacs.
-
-Elisp thus comes with functions dedicated to text editing in Emacs,
-and with data structures that directly reflect Emacs objects (a
-buffer, a window, a character stream, a font...)
-
-Knowing Elisp will allow you to create programs that help you work in
-Emacs, and will also allow you to create programs for your own special
-purposes.
-
-Elisp is a good introduction to other Lisp languages that are widely
-used in the industry or in academia (Scheme, Common Lisp, etc.). And
-you can program in such languages within Emacs, through dedicated
-extensions writen in Elisp...
+If you want to work efficiently in Emacs, knowledge of elisp will help
+you considerably. If you want to learn a new language that's
+relatively straightforward, elisp is a good choice. Also, elisp is a
+good introduction to other Lisp languages (Scheme, Common Lisp,
+Clojure, etc.) that have applications outside the world of text
+editing (and you can program in such languages within Emacs, through
+dedicated extensions writen in elisp...)
 
 *** Emacs Lisp in Emacs
 **** Running the code
-Emacs is an environment where you can write Elisp code and evaluate it
-right away.
+Emacs is an environment where you can write elisp code and evaluate it
+right away. And you can do that anywhere.
 
-To evaluate your work:
+Put the cursor just after a code expression and hit *C-x C-e* (press the
+*Control* key, hold it and press the *x* key, release both, press the
+*Control* key, hold it and press the *e* key, release both). Emacs will
+evaluate that expression and print the result.
 
-put the cursor right after the work and
-- press the *control* key
-- while you hold the *control* key pressed
-- press the *x* key
-release both keys, then
-- press the *control* key again
-- while you hold the *control* key pressed
-- press the *e* key
-and release both
+If the strings before the cursor are not a valid expression Emacs will
+open an error buffer to tell you something about what went wrong.
 
-This operation is summarized as *C-x C-e*. Go back to the Emacs
-Tutorial if you are not confident that you understand the meaning of
-such shortcuts descriptions.
+You can dismiss that buffer by hitting *q* from where you are, and
+you'll be back to your original buffer.
 
-You can evaluate your code anywhere in Emacs.
+You can actually try this here. Put the cursor *anywhere* in this
+paragraph and hit *C-x C-e* as I wrote above. You'll see an error
+message appear in the bottom half of the window. Depending on where
+the cursor was (in my case the cursor was just after the word *cursor*)
+the message will differ but it should look like:
 
-If the strings before the cursor are not valid code, Emacs will tell
-you why the code could not be evaluated by opening an error buffer.
+====================================================
+Debugger entered--Lisp error: (void-variable cursor)
+  eval(cursor nil)
+  elisp--eval-last-sexp(nil)
+  eval-last-sexp(nil)
+  funcall-interactively(eval-last-sexp nil)
+  call-interactively(eval-last-sexp nil nil)
+  command-execute(eval-last-sexp)
+====================================================
 
-You can dismiss that error buffer and return to your original buffer
+Don't worry about what that means, just dismiss the message right away
 by hitting *q*.
 
-Try this here.
+You will mostly be using elisp within Emacs. When you start Emacs, you
+can use the *\*scratch\** buffer to type and evaluate elisp code. You
+can read this document in a separate window, type the code in the
+scratch buffer and evaluate it with C-x C-e to see the results in the
+echo area (just below the mode line, at the bottom of the window). If
+you read this document in Emacs, you can also evaluate all the code
+directly with C-x C-e.
 
-Put the cursor *anywhere* in this paragraph and hit *C-x C-e*. The
-error message that appears will depend on the position of the cursor
-but it should look like this:
+You can try that right away. Put the cursor after the right
+parenthesis, anywhere on the line where the expression (+ 2 3) is
+written below:
 
-: ====================================================
-: Debugger entered--Lisp error: (void-variable position)
-:   eval(position nil)
-:   elisp--eval-last-sexp(nil)
-:   eval-last-sexp(nil)
-:   funcall-interactively(eval-last-sexp nil)
-:   call-interactively(eval-last-sexp nil nil)
-:   command-execute(eval-last-sexp)
-: ====================================================
+(+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
 
-The message "(void-variable position)" indicates that my cursor was
-just after the word "position". The meaning of the message will be
-explained in the next section so for now just dismiss it by hitting
-*q*.
+And hit C-x C-e the way I indicated above. You should see something
+appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
+worry about what either mean. We just need to see that things work.
 
-In Emacs, you can use the *=*scratch*=* buffer to test Elisp code. The
-*=*scratch*=* is a special buffer: Emacs will not ask you to save its
-contents if you kill it or if you quit Emacs. So never ever use it
-store information that you need to keep. Consider it as just temporary
-*scratch* pad on which you jot down ideas to work on later in
-dedicated buffers.
+Now that we know that things work fine, we need to find a convenient
+way to type some code and make it run. Instead of using the scratch
+buffer, we will use a mode especially designed for elisp. In that
+mode, when you type your elisp code followed by Enter (no need for C-x
+C-e), Emacs shows you immediately the result of the code right under
+the code, and displays a new prompt so that you can type some other
+elisp code right away.
 
-To know more about the *=*scratch*=* buffer, check [27.10 Lisp
-Interaction Buffers] in the Emacs manual.
-
-Let's evaluate now something that we know works. Either type the
-expression *(+ 2 3)* in the *=*scratch*=* buffer and put the cursor
-after the right parenthesis, or just put the cursor anywhere on the
-line where the expression *(+ 2 3)* is written below:
-
-: (+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
-
-Hit *C-x C-e*. You should see something appear at the bottom of
-this window, like "5 (#o5, #x5, ?\C-e)".
-
-Just like for the error message above, don't worry about what that
-mean. We just need to see that things work.
-
-As indicated in the [27.10 Lisp Interaction Buffers] of the Emacs
-manual, it is possible to use the "Inferior Emacs Lisp Mode" that
-comes preinstalled in Emacs.
-
-Before starting it, type *C-x 2* to split your emacs frame in 2
-horizontaly stacked windows, enter the other window with *C-x o* and
-then launch ielm with *M-x ielm*. Here, *C-x C-e* is not necessary,
-you just need to hit *Return* after an expression to evaluate it.
+That interactive mode is the "Inferior Emacs Lisp Mode". It comes
+preinstalled in Emacs and you can start it by typing *M-x ielm*. Before
+you do that, type C-x 2 to split your emacs frame in 2 horizontaly
+stacked windows, enter the other window with C-x o and then launch
+ielm with M-x ielm.
 
 **** Documentation and references
 
-Emacs gives you access to all its documentation from any location. You
-can open the Emacs Lisp Reference in a separate buffer and refer to it
-when you want to further understand a specific topic. To do that hit
-*C-h i* to open the global info manual and hit *Enter* on the [* Elisp:
-(elisp).  The Emacs Lisp Reference Manual.] item.
+Emacs gives you access to all its documentation from any
+location. That documentation includes everything you need to know
+about elisp. We will see how to use the documentation to find
+information about the code you type. While you read this document and
+practice, you can open the Emacs Lisp Reference in a separate buffer
+and refer to it when you want to further understand a specific
+topic. To do that hit *C-h i* to open the global info manual and go
+to the [* Elisp: (elisp).  The Emacs Lisp Reference Manual.] item.
 
-The minimal command set you need to master to find your way in an Info manual is
+We'll also use plenty of methods to find information about what we do,
+right when we do it. That way you'll be able to learn right away how
+to discover new things, all by yourself.
 
 *** Learning Emacs Lisp
-You can only learn by typing code, making mistakes, understanding the
-mistakes and typing more code.
-
-To follow this introduction, type all the code in your ielm buffer,
-evaluate it, try new things, read the error messages and try to learn
-from them.
+You can only learn by typing code, making mistakes, learning from the
+mistakes and typing even more code. To follow this introduction, type
+all the code in your ielm buffer, evaluate it, try new things, read
+the error messages and try to learn from them. Type more and try all
+you can.
 
 Open a separate buffer and take notes in it. You can write code in
-that separate buffer and evaluate it with *C-x C-e* to confirm that
-you understood how the code worked.
+that separate buffer and evaluate it with C-x C-e to confirm that you
+understood how the code worked. Remember that you can write elisp code
+pretty much *anywhere* in Emacs and evaluate it right away. Emacs is a
+fantastic environment to learn programming because it reacts right
+away to your elisp code. You can see right away the result of what
+you're doing, and if it went wrong you can learn from the error
+message that Emacs displays, you can correct your code and you can
+make it run with the expected result right away ("right away" is
+relative to your understanding of elisp, of course).
 
-Remember that you can write Elisp code pretty much *anywhere* in Emacs
-and evaluate it on the spot. Emacs is a fantastic environment to learn
-programming because it reacts immediately to your Elisp code. You can
-see right away the result of what you're doing, and if it went wrong
-you can learn from the error message that Emacs displays, you can
-correct your code and you can make it run with the expected result
-instantly ("instantly" being relative to your understanding of Elisp,
-of course).
-
-** The elements of Elisp
+** The elements of elisp
 *** Expressions
 Code is made of expressions. Expressions are evaluated and the
 evaluation produces results.
 
-There are basically 2 types of Elisp expressions. First there are
+There are basically 2 types of elisp expressions. First there are
 atoms: single elements that won't evaluate to anything but their own
 value if they have one or generate an error message if they have
 none. There are many types of atom, but atoms alone won't bring us
 very far.
 
-To do interesting things, we need to create groups of atoms by putting
-atoms between parentheses so that they work together. Such groups are
-called *lists*. Lists are the second type of Elisp expressions.
+To do interesting things, we need to group atoms and make them work
+together. Such groups are called *lists*. Lists are the second type of
+elisp expressions.
 
 Think of atoms as words and lists as sentences. Uttering single words
 generally does not produce much results. You start to get things done
-when you start speaking sentences. Programs, the subject of this
-document, are like sentences.
+when you start speaking sentences.
 
-Just like every other programming language, Elisp programs are lists
-of commands followed by arguments to those commands. Lists can be very
-short and not do much (like the "(+ 2 3)" thing that produced "5"
-above), or can be extremely long and complex and do a lot (like the
-Deep Space 1 code that was not only written in Lisp but also modified
-directly from Earth while Deep Space was 100 million miles away,
-pretty much like we'll be able to modify our code here, within Emacs,
-with much less consequences, granted).
+Programs, the subject of our study, are like sentences. Just like
+every other programming language, elisp programs are lists of commands
+and arguments to those commands. Lists can be very short and not do
+much (like the "(+ 2 3)" thing that produced "5" above), or can be
+extremely long and complex and do a lot (like the Deep Space 1 code
+that was not only written in Lisp but also modified directly from
+Earth while Deep Space was 100 million miles away, pretty much like
+we'll be able to modify our code here, within Emacs, with much less
+consequences, granted).
 
 From now on we are going to enter code at the IELM prompt and evaluate
-that code to see the results. Some code will be valid Elisp code and
-will produce satisfying results, some code will be valid Elisp code
-but will produce errors and some will not be valid Elisp code but will
-still help us learn Elisp.
-
+that code to see the results. Some code will be valid elisp code and
+will produce satisfying results, some code will be valid elisp code
+but will produce errors and some will not be valid elisp code but will
+still help us learn elisp.
 *** Atoms
 **** Numbers (atom)
 At the ielm prompt, type 65 followed by Enter:
 
-: ELISP> 65
+ ELISP> 65
 
 The result should be displayed immediately under the prompt line:
 
-: ELISP> 65
-: 65 (#o101, #x41, ?A)
-: ELISP> _  <- the cursor is back in position, waiting for some input
+ ELISP> 65
+ 65 (#o101, #x41, ?A)
+ ELISP> _  <- the cursor is back in position, waiting for some input
 
-What you just did is type an *expression* at the prompt and feed it to
-Emacs. What happened next is that Emacs *read* it, then Emacs
-*evaluated* it, then *printed* the evaluation result and then *looped*
-to create a new prompt for you to enter a new expression. This cycle
-is commonly called a Read-Evaluate-Print Loop, or "repl".
+What you did is type an *expression* at the prompt, you had Emacs read
+it by hitting Enter, then Emacs evaluated it, printed the evaluation
+result and looped to create a new prompt for you to enter a new
+expression (that's commonly called a Read-Evaluate-Print Loop:
+"repl").
 
 You entered 65, and Emacs evaluated that to the value 65 along with
 the other things between parenthesis that are:
 
-: #o101 = 65 in octal
-: #x41 = 65 in hexadecimal
-: ?A = the character A (surprisingly)
+ #o101 = 65 in octal
+ #x41 = 65 in hexadecimal
+ ?A = the character A (surprisingly)
 
 The first 65 is 65 in "decimal", the way numbers are counted the most
 commonly by human being. Emacs supports octal and hexadecimal ways of
-counting too.
+counting too. Also, as far as Emacs is concered, characters are
+represented by the number that indicates their position in the very
+long list that is the character set internally supported by Emacs. If
+you evaluate a very big number, you'll see that it might not be
+associated anymore to a character.
 
-Also, as far as Emacs is concered, characters are represented by the
-number that is their position in the very long list that is the
-character set internally supported by Emacs.
-
-For practical purposes, Emacs only displays characters for integer
-values between 0 and 127, although this can be modified by the user
-[-> see 24.9 Evaluating Emacs Lisp Expressions]. If you change that
-setting and evaluate a big number, you'll see that it might not be
-associated anymore to a character. On my machine, the biggest number
-associated to a character is 1114111, but the character is not
-displayable with the fonts I use so I only see: "?􏿿 ".
+On my machine, the biggest number associated to a character is
+1114111, but the character is not displayable on my screen, I only
+see: "?􏿿 ".
 
 You may wonder about the ? before A. This is just a convention to say
 "this is the character A, not hexadecimal 10 and not a variable that
