@@ -80,7 +80,7 @@ Put the cursor just after a code expression and hit *C-x C-e* (press the
 evaluate that expression and print the result.
 
 **** Evaluation errors
-If the string before the cursor is not a valid expression Emacs will
+If the string before the cursor is not a valid expression, Emacs will
 open an error buffer to tell you something about what went wrong.
 
 You can dismiss that buffer by hitting *q* from where you are, and
@@ -93,7 +93,6 @@ the cursor was (in my case the cursor was just after the word *cursor*)
 the message will differ but it should look like:
 
 #+begin_example
-====================================================
 Debugger entered--Lisp error: (void-variable cursor)
   eval(cursor nil)
   elisp--eval-last-sexp(nil)
@@ -101,7 +100,6 @@ Debugger entered--Lisp error: (void-variable cursor)
   funcall-interactively(eval-last-sexp nil)
   call-interactively(eval-last-sexp nil nil)
   command-execute(eval-last-sexp)
-====================================================
 #+end_example
 
 Don't worry about what that means, just dismiss the message right away
@@ -134,7 +132,7 @@ Echo area. If you have nothing to quit, that's good. If you have
 anything to quit, that's what it does.
 
 Like, you wanted to go with *C-x C-e* but you mistakenly hit *C-c* first
-instead but you've not yet hit *C-e*. Well, no problem, quit your *C-c*
+instead and you've not yet hit *C-e*. Well, no problem, quit your *C-c*
 with *C-g* and you'll be back where you were.
 
 *Esc Esc Esc* (Esc three times) works similarly.
@@ -142,9 +140,10 @@ with *C-g* and you'll be back where you were.
 If you were not fast enough and Emacs has already displayed a buffer
 or something, try to dismiss that with *q*.
 
-If you've messed up things a bit too much to fix all with just *q* and
-*C-g*, like you feel the need to kill buffers or to undo stuff, check
-the Emacs tutorial (*C-h t*), take notes, do your thing and come back.
+If you've messed up things a bit too much to fix everything with just
+*q* and *C-g*, like you feel the need to kill buffers or to undo stuff,
+check the Emacs tutorial (*C-h t*), take notes, do your thing and come
+back.
 
 *** Documentation and references
 **** The /Help/ system
@@ -169,7 +168,7 @@ Ok, that's a lot already. Just take 15 minutes to navigate all that,
 take notes in a separate buffer, or on paper, and come back when
 you've had enough.
 
-**** key shortcuts (key bindings) and commands
+**** Key shortcuts (key bindings) and commands
 Key binding are /all/ associated with elisp commands. If you want to
 learn elisp, you must know the commands because you'll also use them
 in your code.
@@ -183,7 +182,6 @@ While you're at it, try *C-h k* C-h k. You should have a Help buffer
 that displays something like this:
 
 #+begin_example
-====================================================
 C-h k runs the command describe-key (found in global-map), which is an
 interactive compiled Lisp function in ‘help.el’.
 
@@ -199,13 +197,11 @@ can be any kind of a key sequence; it can include keyboard events,
 mouse events, and/or menu events.  When calling from a program, pass
 KEY-LIST as a list of elements (SEQ . RAW-SEQ) where SEQ is a
 key-sequence and RAW-SEQ is its untranslated form.
-=====================================================
 #+end_example
 
 And now, try *C-h k* C-x C-e
 
 #+begin_example
-====================================================
 C-x C-e runs the command eval-last-sexp (found in global-map), which
 is an interactive compiled Lisp function in ‘elisp-mode.el’.
 
@@ -218,7 +214,6 @@ It is bound to C-x C-e.
 Evaluate sexp before point; print value in the echo area.
 Interactively, with a non ‘-’ prefix argument, print output into
 current buffer.
-=====================================================
 #+end_example
 
 As if that were not enough already, try *C-h k* with all the key
@@ -859,7 +854,6 @@ a help message). The help buffer has a better format that I'll copy
 here:
 
 #+begin_example
-====================================================
  quote is a special form in ‘C source code’.
 
  (quote ARG)
@@ -874,7 +868,6 @@ here:
  code.
  See the common pitfall in info node ‘(elisp)Rearrangement’ for an
  example of unexpected results when a quoted object is modified.
-====================================================
 #+end_example
 
 The help message says what we've already discovered: *quote* is a
@@ -886,7 +879,6 @@ What about describing the *describe-function* function?
 
  ELISP> (describe-function 'describe-function)
 #+begin_example
-====================================================
  describe-function is an interactive autoloaded compiled Lisp function
  in ‘help-fns.el’.
 
@@ -896,7 +888,6 @@ What about describing the *describe-function* function?
  (describe-function FUNCTION)
 
  Display the full documentation of FUNCTION (a symbol).
-====================================================
 #+end_example
 
 This help message also tells us that the argument is not ARG, as for
@@ -936,7 +927,6 @@ its definition by using the function *describe-function*:
  ELISP> (describe-function 'number-or-marker-p)
 
 #+begin_example
-====================================================
  number-or-marker-p is a built-in function in ‘src/data.c’.
 
  (number-or-marker-p OBJECT)
@@ -944,7 +934,6 @@ its definition by using the function *describe-function*:
  Return t if OBJECT is a number or a marker.
 
  [back]
-=====================================================
 #+end_example
 
 We now understand what happens when we ask Emacs to add objects. Once
@@ -989,13 +978,11 @@ We already know *+*, but let check its definition:
  ELISP> (describe-function '+)
 
 #+begin_example
-====================================================
  + is a built-in function in ‘C source code’.
 
  (+ &rest NUMBERS-OR-MARKERS)
 
  Return sum of any number of arguments, which are numbers or markers.
-=====================================================
 #+end_example
 
 *+* is a standard function and &rest is a keyword that indicates that
@@ -1023,7 +1010,6 @@ already so let's go straight to *-*.
  ELISP>  (describe-function '-)
 
 #+begin_example
-====================================================
 - is a built-in function in ‘C source code’.
 
 (- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
@@ -1031,7 +1017,6 @@ already so let's go straight to *-*.
 Negate number or subtract numbers or markers and return the result.
 With one arg, negates it.  With more than one arg,
 subtracts all but the first from the first.
-=====================================================
 #+end_example
 
 The first argument is optional:
@@ -1058,13 +1043,11 @@ all subtracted from the first:
  ELISP>  (describe-function '*)
 
 #+begin_example
-====================================================
  * is a built-in function in ‘C source code’.
 
 (* &rest NUMBERS-OR-MARKERS)
 
 Return product of any number of arguments, which are numbers or markers.
-=====================================================
 #+end_example
 
  ELISP> (*)
@@ -1085,7 +1068,6 @@ And, by the way:
  ELISP>  (describe-function '/)
 
 #+begin_example
-====================================================
 / is a built-in function in ‘C source code’.
 
 (/ NUMBER &rest DIVISORS)
@@ -1094,7 +1076,6 @@ Divide number by divisors and return the result.
 With two or more arguments, return first argument divided by the rest.
 With one argument, return 1 divided by the argument.
 The arguments must be numbers or markers.
-=====================================================
 #+end_example
 
 Let's try a few things:
@@ -1131,14 +1112,12 @@ but in an integer.
  ELISP>  (describe-function '%)
 
 #+begin_example
-====================================================
 % is a built-in function in ‘C source code’.
 
 (% X Y)
 
 Return remainder of X divided by Y.
 Both must be integers or markers.
-=====================================================
 #+end_example
 
  ELISP> (% 1)
@@ -1170,25 +1149,21 @@ Division by 0 is not allowed, thus there are no possible remainders.
  ELISP>  (describe-function 'expt)
 
 #+begin_example
-====================================================
 expt is a built-in function in ‘src/floatfns.c’.
 
 (expt ARG1 ARG2)
 
 Return the exponential ARG1 ** ARG2.
-=====================================================
 #+end_example
 
  ELISP>  (describe-function 'sqrt)
 
 #+begin_example
-====================================================
 sqrt is a built-in function in ‘src/floatfns.c’.
 
 (sqrt ARG)
 
 Return the square root of ARG.
-=====================================================
 #+end_example
 
  ELISP> (expt 0 0)
