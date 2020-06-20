@@ -15,25 +15,39 @@ Emacs Lisp (abreviated elisp) is a programming language of the Lisp
 family and is mostly used within Emacs[fn:1]. This introduction is
 based on Robert J. Chassel's Introduction to Programming in Emacs Lisp
 and tries to cover the same ground, but in a different way.
+
+If you have some non-trivial programming experience and want to learn
+  elisp, you'd better try to apply that experience to Emacs Lisp by
+  just reading code and trying to understand it with the Emacs Lisp
+  Reference. You're likely not to be fulfilled by this introduction, but
+  if you feel like reading it and correcting mistakes, please do so.
+*** TODO add link to the intro
 ** Assumptions
-This tutorial assumes that you know the basics of navigating Emacs.
+- This tutorial assumes that you know the basics of navigating Emacs.
 If that is not the case, take about 15 minutes to go through the Emacs
 tutorial. If you read this document in Emacs, you can type *C-h t* (the
 *Control* key and the *h* key together, followed by the *t* key) to open the
 tutorial.
-This tutorial also assumes that you have some basic computer litteracy and know your way around a computer (well, you would not be using emacs if that were not the case).
+- This introduction also assumes that you have some basic
+computer literacy and know your way around a computer (I assume that
+you would not be using Emacs if that were not the case).
 ** Target readership
-- You are interested in knowing more about Emacs, and for that you need to know more about Emacs Lisp.
-- You do not have any formal computer science training, you are just an amateur computer user.
-- If you have some non trivial programming experience, you'd better  try to apply that experience to Emacs Lisp by just reading code and trying to undertand it with the Emacs Lisp Reference.
+- You are interested in knowing more about Emacs, and for that you
+  need to know more about Emacs Lisp.
+- You do not have any formal computer science training, you are just
+  an amateur computer user, but you'd like to automate/program things,
+  and why not do it in a fun language?
+- You are just curious. I started like this too.
 ** Introduction to the environment
 *** Emacs Lisp and Emacs and Lisps
-Emacs is written mostly in elisp. Historically, Emacs was concieved as
+Emacs is written mostly in elisp. Historically, Emacs was conceived as
 a virtual lisp machine[fn:3], editing functions were thus Lisp code editing
 functions.
 
 Emacs extensions (modes, or elisp applications) are written in
-elisp. It is possible to write external programs and execute them from
+elisp.
+
+It is possible to write external programs and execute them from
 the command line by using Emacs as the interpreter.
 
 Elisp comes with data structures that directly reflect Emacs objects
@@ -43,14 +57,16 @@ integer, a floating number, a string...)
 
 If you want to work efficiently in Emacs, knowledge of elisp will help
 you considerably. If you want to learn a new language that's
-relatively straightforward, elisp is a good choice. Also, elisp is a
-good introduction to other Lisp languages (Scheme, Common Lisp,
-Clojure, etc.) that have applications outside the world of text
-editing (and you can program in such languages within Emacs, through
-dedicated extensions writen in elisp...)
+relatively straightforward, elisp is a good choice.
+
+Also, elisp is a good introduction to other Lisp languages (Scheme,
+Common Lisp, Clojure, etc.) that have applications outside the world
+of text editing (and you can program in such languages within Emacs,
+through dedicated extensions written in elisp...)
 
 *** Emacs Lisp in Emacs
-**** Running the code
+**** Running the code, and a few other things
+***** *C-x C-e* 
 Emacs is an environment where you can write elisp code and evaluate it
 right away. And you can do that anywhere.
 
@@ -59,7 +75,8 @@ Put the cursor just after a code expression and hit *C-x C-e* (press the
 *Control* key, hold it and press the *e* key, release both). Emacs will
 evaluate that expression and print the result.
 
-If the strings before the cursor are not a valid expression Emacs will
+***** Evaluation errors
+If the string before the cursor is not a valid expression Emacs will
 open an error buffer to tell you something about what went wrong.
 
 You can dismiss that buffer by hitting *q* from where you are, and
@@ -85,23 +102,44 @@ Don't worry about what that means, just dismiss the message right away
 by hitting *q*.
 
 You will mostly be using elisp within Emacs. When you start Emacs, you
-can use the *\*scratch\** buffer to type and evaluate elisp code. You
-can read this document in a separate window, type the code in the
-scratch buffer and evaluate it with C-x C-e to see the results in the
-echo area (just below the mode line, at the bottom of the window). If
-you read this document in Emacs, you can also evaluate all the code
-directly with C-x C-e.
+can use the **scratch** buffer to type and evaluate elisp code. You can
+read this document in a separate window, type the code in the scratch
+buffer and evaluate it with C-x C-e to see the results in the echo
+area (just below the mode line, at the bottom of the window). Since
+you are expected to read this document in Emacs, you can also evaluate
+all the code in it directly with C-x C-e.
 
-You can try that right away. Put the cursor after the right
-parenthesis, anywhere on the line where the expression (+ 2 3) is
-written below:
+***** (+ 2 3)
+Let's try *C-x C-e* right away. Put the cursor after the right parenthesis,
+anywhere on the line where the expression (+ 2 3) is written below:
 
 (+ 2 3)    <- anywhere *between* the ")" and the tip of the arrow.
 
 And hit C-x C-e the way I indicated above. You should see something
-appear at the bottom of this window, like "5 (#o5, #x5, ?\C-e)". Don't
-worry about what either mean. We just need to see that things work.
+appear at the bottom of this window (the Echo area), like "5 (#o5,
+#x5, ?\C-e)". Don't worry about what either mean. We just need to see
+that things work.
 
+***** *C-g*
+If you're in the middle of making a mistake, like hitting the wrong
+key binding, /always/ use *C-g* to *get* out of there fast. *C-g* means
+*quit*. Try it now. You'll see a "quit" displayed in the Echo area. If
+you have nothing to quit, that's good. If you have anything to quit,
+that's what it does.
+
+Like, you wanted to go with *C-x C-e* but you mistakenly hit *C-c* first
+instead but you've not yet hit *C-e*. Well, no problem, quit your *C-c*
+with *C-g* and you'll be back where you were.
+
+*Esc Esc Esc* (Esc three times) works similarly.
+
+If you were not fast enough and Emacs has already displayed a buffer
+or something, try to dismiss that with *q*.
+
+To kill buffers you don't need or undo stuff, check the Emacs tutorial
+(*C-h t*), take notes and come back when you're more confident.
+
+***** the Inferior Emacs Lisp Mode
 Now that we know that things work fine, we need to find a convenient
 way to type some code and make it run. Instead of using the scratch
 buffer, we will use a mode especially designed for elisp. In that
@@ -112,24 +150,106 @@ elisp code right away.
 
 That interactive mode is the "Inferior Emacs Lisp Mode". It comes
 preinstalled in Emacs and you can start it by typing *M-x ielm*. Before
-you do that, type C-x 2 to split your emacs frame in 2 horizontaly
+you do that, type C-x 2 to split your Emacs frame in 2 horizontally
 stacked windows, enter the other window with C-x o and then launch
 ielm with M-x ielm.
 
 **** Documentation and references
-
-Emacs gives you access to all its documentation from any
+***** The /Help/ system
+Emacs gives you access to all of its documentation from any
 location. That documentation includes everything you need to know
-about elisp. We will see how to use the documentation to find
-information about the code you type. While you read this document and
-practice, you can open the Emacs Lisp Reference in a separate buffer
-and refer to it when you want to further understand a specific
-topic. To do that hit *C-h i* to open the global info manual and go
-to the [* Elisp: (elisp).  The Emacs Lisp Reference Manual.] item.
+about elisp (well, not really, but what you have at your fingertips is
+enough for a lifetime of programming).
 
-We'll also use plenty of methods to find information about what we do,
-right when we do it. That way you'll be able to learn right away how
-to discover new things, all by yourself.
+The /Help/ system is called with the prefix key *C-h*. Hit *C-h ?* to see all
+the possible options for the /Help/ system, and some.
+
+You can always open the Emacs Lisp Reference in a separate buffer and
+refer to it when you want to further understand a specific topic. To
+do that hit *C-h i* to open the global /Info/ manual and go to the [*
+Elisp: (elisp).  The Emacs Lisp Reference Manual.]  item.
+
+And you can also see all the /Info/ system options by hitting *C-h i*
+followed by *?* (that buffer can be dismissed with *q*).
+
+Ok, that's a lot already. Just take 15 minutes to navigate all that,
+take notes in a separate buffer, or on paper, and come back when
+you're done.
+
+***** key shortcuts (keybindings) and commands
+Key binding are /all/ associated with elisp commands. If you want to
+learn elisp, you must know the commands because you'll also use them
+in your code.
+
+To know which command is associated to a given key binding, just use
+*C-h k*. This will prompt you to enter the key shortcut as you'd want to
+use it normally and will create a /Help/ buffer with the information you
+need.
+
+While you're at it, try *C-h k* C-h k, you should have a Help buffer
+that displays something like this:
+
+====================================================
+C-h k runs the command describe-key (found in global-map), which is an
+interactive compiled Lisp function in ‘help.el’.
+
+It is bound to C-h k, <f1> k, <help> k, <menu-bar> <help-menu>
+<describe> <describe-key-1>.
+
+(describe-key KEY-LIST &optional BUFFER)
+
+  Probably introduced at or before Emacs version 22.1.
+
+Display documentation of the function invoked by KEY-LIST.  KEY-LIST
+can be any kind of a key sequence; it can include keyboard events,
+mouse events, and/or menu events.  When calling from a program, pass
+KEY-LIST as a list of elements (SEQ . RAW-SEQ) where SEQ is a
+key-sequence and RAW-SEQ is its untranslated form.
+====================================================
+
+And now, try *C-h k* C-x C-e
+
+====================================================
+C-x C-e runs the command eval-last-sexp (found in global-map), which
+is an interactive compiled Lisp function in ‘elisp-mode.el’.
+
+It is bound to C-x C-e.
+
+(eval-last-sexp EVAL-LAST-SEXP-ARG-INTERNAL)
+
+  Probably introduced at or before Emacs version 24.4.
+
+Evaluate sexp before point; print value in the echo area.
+Interactively, with a non ‘-’ prefix argument, print output into
+current buffer.
+====================================================
+
+As if that were not enough already, try *C-h k* with all the key
+bindings we've mentioned already.
+
+As you progress in this introduction, make extensive use of the *C-h*
+commands to find information on whatever seems like you'd need to know
+more about (basically /everything/, let's be honest...)
+
+***** Windows all over the place !!!
+You may not be yet totally familiar with the way Emacs uses your
+screen space.
+
+When you are in a given window, use *C-x 1* ("just leave this *one*") to
+close all the other windows (the buffers that have been opened are
+still around, don't worry.)
+
+When you are in a window and you want to move to another one, use *C-x
+o* ("go see the *other* one").
+
+When you want to dismiss a buffer (not close it) that has been
+automatically generated, like a /Help/ buffer, just hit *q*.
+
+When you're in a given window and you want to close it, use *C-x 0* ("I
+want *zero* of this"), you'll be left with the other windows.
+ 
+Emacs tries to be smart with windows allocation, so don't over use the
+above shortcuts, you'll just waste a lot of time.
 
 *** Learning Emacs Lisp
 You can only learn by typing code, making mistakes, learning from the
@@ -165,7 +285,7 @@ together. Such groups are called *lists*. Lists are the second type of
 elisp expressions.
 
 Think of atoms as words and lists as sentences. Uttering single words
-generally does not produce much results. You start to get things done
+generally does not produce much result. You start to get things done
 when you start speaking sentences.
 
 Programs, the subject of our study, are like sentences. Just like
@@ -209,8 +329,8 @@ the other things between parenthesis that are:
  ?A = the character A (surprisingly)
 
 The first 65 is 65 in "decimal", the way numbers are counted the most
-commonly by human being. Emacs supports octal and hexadecimal ways of
-counting too. Also, as far as Emacs is concered, characters are
+commonly by human beings. Emacs supports octal and hexadecimal ways of
+counting too. Also, as far as Emacs is concerned, characters are
 represented by the number that indicates their position in the very
 long list that is the character set internally supported by Emacs. If
 you evaluate a very big number, you'll see that it might not be
@@ -264,23 +384,28 @@ say that we did not do the right thing.
 no value has been set. Because no value has been set, Emacs stops the
 evaluation and displays an error message.
 
-There are times when we want to use a symbol but we don't want Emacs to evaluate it right away, becauce its value is not yet set for exemple. For this we *quote* it by preceeding it with an apostrophe.
+There are times when we want to use a symbol but we don't want Emacs
+to evaluate it right away, because its value is not yet set for
+example. For this we *quote* it by preceding it with an apostrophe.
 
  ELISP> 'rose
  rose
 
 Here, Emacs sees that we put the apostrophe before the symbol so it
 won't try to evaluate it and it evaluates the expression as the symbol
-itself. As it it were telling us "I see that you want to use that
+itself. As if it were telling us "I see that you want to use that
 symbol that's called rose, go ahead."
 
-Symbols can be non-conventional words. Let's see a symbol that is actually associated to a variable that holds a value:
+Symbols can be non-conventional words. Let's see a symbol that is
+actually associated to a variable that holds a value:
 
  ELISP> fill-column
  70 (#o106, #x46, ?F)
 
 We're seeing a word that evaluates to a number... This "fill-column"
-symbol is a *variable* that actually holds the value 70. "fill-column" is defined within Emacs as the "Column beyond which automatic line-wrapping should happen." (quoted from C-h v fill-column).
+symbol is a *variable* that actually holds the value 70. "fill-column"
+is defined within Emacs as the "Column beyond which automatic
+line-wrapping should happen." (quoted from C-h v fill-column).
 
 The value is 70 on my machine but it can differ on yours. Since 70 is
 an integer, Emacs also provides us with its octal, hexadecimal and
@@ -291,7 +416,7 @@ an integer, Emacs also provides us with its octal, hexadecimal and
 **** Messages (atom)
 When we put "rose" between double quotation marks (like we just did in
 this sentence), Emacs stops considering it as a symbol that is
-supposed to be associated to a value and evaluates it as a
+supposed to be associated with a value and evaluates it as a
 string. Something like a message to display to the human reader.
 
  ELISP> "rose"
@@ -321,7 +446,9 @@ evaluates to the symbol, a string evaluates to the same string.
 
 *** Lists
 **** Lists the wrong way
-To create "sentences" that Emacs will understand, we need to associate the "words" that we know are the atoms. So, let's try to associate atoms together to see if we can make them add 2 and 3.
+To create "sentences" that Emacs will understand, we need to associate
+the "words" that we know are the atoms. So, let's try to associate
+atoms together to see if we can make them add 2 and 3.
 
  ELISP> add 2 and 3
  *** IELM error ***  More than one sexp in input
@@ -354,7 +481,8 @@ since Emacs only treats it as a string we've not advanced much.
 By the way, a string, however long it is, is still an atom, because it
 is a succession (an array) of characters some of which can happen to
 be spaces but since Emacs does not read human languages, spaces are
-not relevant as far as Emacs is concerned. In fact, "normal" spaces are equivalent to 32... Check that yourself by evaluating 32.
+not relevant as far as Emacs is concerned. In fact, "normal" spaces
+are equivalent to 32... Check that yourself by evaluating 32.
 
 **** Lists the elisp way
 To have Emacs consider a sexp with multiple elements as a list of
@@ -367,7 +495,7 @@ that they are considered as a valid list of elements for evaluation.
 
 But Elisp and all the other languages of the Lisp family are special
 in that regard because they are "LISt Processing" languages. Lists are
-written in their names. Lists are trivialy easy to create in Lisps
+written in their names. Lists are trivially easy to create in Lisps
 because lists are what Lisps were made for. In Lisps (and in elisp),
 to create a list, you just put all your elements between parenthesis.
 
@@ -378,7 +506,9 @@ Let's try that.
  ELISP> (add 2 and 3)
  *** Eval error ***  Symbol’s function definition is void: add
 
-Interesting. Here Emacs does not complain that we serve it more sexps that he can handle, but instead he gives us an error message similar to what we got with *rose*.
+Interesting. Here Emacs does not complain that we serve it more sexps
+than he can handle, but instead he gives us an error message similar
+to what we got with *rose*.
 
  ELISP> rose
  *** Eval error ***  Symbol's value as variable is void: rose
@@ -429,7 +559,10 @@ that's actually defined as adding numbers and 2 as well as 3 are
 recognized as numbers and get added together to produce 5.
 
 *+* is the function that adds what follows it, and from now on let's
-call what follows "arguments". Two parenthesis enclose the list of items we need to make that calculation: the function right after the opening parenthesis and the arguments after the function and before the closing parenthesis.
+call what follows "arguments". Two parentheses enclose the list of
+items we need to make that calculation: the function right after the
+opening parenthesis and the arguments after the function and before
+the closing parenthesis.
 
 That's the way elisp lists are created.
 
@@ -442,7 +575,10 @@ By the way, any kind of space between the elements/arguments would work:
  )
  5 (#o5, #x5, ?\C-e)
 
-Spaces, new lines, tabulations, etc. are called "whitespace". And any whitespace is good to separate elements in a list. Which also means that our code can be nicely indented so that it's easier for us to read and that won't affect at all the way Emacs interprets it.
+Spaces, new lines, tabulations, etc. are called "whitespace". And any
+whitespace is good to separate elements in a list. Which also means
+that our code can be nicely indented so that it's easier for us to
+read and that won't affect at all the way Emacs interprets it.
 
 [-> 5 Lists ]
 
@@ -485,15 +621,29 @@ error message. Let's try:
 
 Well, we knew that already, didn't we?
 
-We already know that (+ 2 3) is 5, so basically what we sent to Emacs was (5 5), which we know is not going to give us anything special (not that we won't sometimes need to have such a sexp, but not now).
+We already know that (+ 2 3) is 5, so basically what we sent to Emacs
+was (5 5), which we know is not going to give us anything special (not
+that we won't sometimes need to have such a sexp, but not now).
 
 [ -> 9 Evaluation ]
 
 *** TODO Other kinds of data
 **** Emacs is a lisp environment
-Emacs is a very special program. Just so that you're not confused, Emacs is *not* a text editor. It is a lisp environment that happens to have a lot of code editing functions. Being a lisp environment, you have access to everything that is defined in your particular session at any moment. And the modes that you run within Emacs are actually applications that "live" in that lisp environment and that make use of all the things that the environment provides (and that you, or the mode, can change on the spot).
+Emacs is a very special program. Just so that you're not confused,
+Emacs is *not* a text editor. It is a lisp environment that happens to
+have a lot of code editing functions. Being a lisp environment, you
+have access to everything that is defined in your particular session
+at any moment. And the modes that you run within Emacs are actually
+applications that "live" in that lisp environment and that make use of
+all the things that the environment provides (and that you, or the
+mode, can change on the spot).
 
-Since we're going to use Emacs to write (and learn) code, we want to be familiar with its "editor" specific features. For now we'll just check what other kind of data besides for numbers, strings, symbols, etc. can be useful in a text editing context. If you check Chapter 2.4 of the Reference you'll see that Emacs offers 15 different kinds of data for your use. But we'll only see the first three here.
+Since we're going to use Emacs to write (and learn) code, we want to
+be familiar with its "editor" specific features. For now we'll just
+check what other kinds of data besides for numbers, strings, symbols,
+etc. can be useful in a text editing context. If you check Chapter 2.4
+of the Reference, you'll see that Emacs offers 15 different kinds of
+data for your use. But we'll only see the first three here.
 
 **** Buffers
 
@@ -525,7 +675,7 @@ appropriate *type* because "number-or-marker-p"...
  ELISP>(+ 2 fill-column rose "this is a string" (+ 2 3))
  *** Eval error ***  Symbol’s value as variable is void: rose
 
-That small quote was enough to profundly change the status of *rose*.
+That small quote was enough to profoundly change the status of *rose*.
 
 In the first case, 'rose is evaluated as rose, and rose, being a
 symbol is neither a number nor a "marker" (we'll see later what a
@@ -539,13 +689,13 @@ expression.
 Let's remove rose from the list for the moment and see the rest of the
 sexp.
 
- ELISP>(+ 2 fill-column "this is a string" (+ 2 3))
- *** Eval error ***  Wrong type argument: number-or-marker-p, "this is a string"
+ ELISP>(+ 2 fill-column "this is a string" (+ 2 3)) *** Eval error ***
+ Wrong type argument: number-or-marker-p, "this is a string"
 
 Here again, we see that + expects "number or marker" arguments which a
 string is not and so Emacs stops evaluating the sexp and returns an
 error message.
-**** TODO find a function that give the type of its argument
+**** TODO find a function that gives the type of its argument
 Let's remove the string and see what's left:
 
  ELISP>(+ 2 fill-column (+ 2 3))
@@ -563,7 +713,7 @@ directly to see if their evaluation produced something compatible with
 the whole sexp (+ 2 and fill-column) or, in the case of (+ 2 3),
 evaluating each element of sub-sexps to produce an evaluation of that
 specific sub-sexp. Only once Emacs had all the elements evaluated did
-it produce and evaluation of the main sexp:
+it produces and evaluation of the main sexp:
 
 1. (+ 2 fill-column (+ 2 3))
 2. (+ 2 70 5)
@@ -580,19 +730,26 @@ Let's try to use it as a function:
  ELISP> (number-or-marker-p "rose")
  nil
 
-*nil* means "nothing" or "non-existent". In the context of Lisp, it means *false*. It is the opposite of *t*, which means *true*. So the function tells us that "rose" is *not* a number or a marker.
+*nil* means "nothing" or "non-existent". In the context of Lisp, it
+means *false*. It is the opposite of *t*, which means *true*. So the
+function tells us that "rose" is *not* a number or a marker.
 
  ELISP> (number-or-marker-p rose)
  *** Eval error ***  Symbol’s value as variable is void: rose
 
-Here we are, number-or-marker-p is a function that tests whether its argument is a number or marker. In the case of + we can guess that + calls number-or-marker-p to test all its argument to see if it really can add them all up.
+Here we are, number-or-marker-p is a function that tests whether its
+argument is a number or marker. In the case of + we can guess that +
+calls number-or-marker-p to test all its argument to see if it really
+can add them all up.
 
-Let's try a function that, we expect, won't accept numbers or markers as arguments:
+Let's try a function that, we expect, won't accept numbers or markers
+as arguments:
 
  ELISP> (message 3)
  *** Eval error ***  Wrong type argument: stringp, 3
 
-*message* expects strings and we can infer that stringp is a function that tests whether its argument is a string or not:
+*message* expects strings and we can infer that stringp is a function
+that tests whether its argument is a string or not:
 
  ELISP> (stringp 3)
  nil
@@ -610,13 +767,17 @@ Et voilà!
 *** Summary
 We've learned a huge lot already.
 
- • Lisp evaluates expressions and returns the resulting value.
- • Lisp expressions can be atoms or lists
- • Lisp lists can contain atoms or lists
- • Lisp expressions are evaluated one element at a time, from left to right
- • Evaluation stops when an element is not of the expected type, or more generally when an error occurs.
+ • Lisp evaluates expressions and returns the resulting value.  Lisp
+ • expressions can be atoms or lists Lisp lists can contain atoms or
+ • lists Lisp expressions are evaluated one element at a time, from
+ • left to right Evaluation stops when an element is not of the
+ • expected type, or more generally when an error occurs.
 
-An elisp  program is thus just a list of elements that are evaluated sequentially to produce a global result, and running a program means evaluating the list it is made of. Although we've only dealt with small lists until now, all elisp programs are made of such lists. That's really all there is to lisp.
+An elisp program is thus just a list of elements that are evaluated
+sequentially to produce a global result, and running a program means
+evaluating the list it is made of. Although we've only dealt with
+small lists until now, all elisp programs are made of such
+lists. That's really all there is to lisp.
 
 ** Some useful functions
 *** Describe function
@@ -690,7 +851,7 @@ ways to access it easily, like hitting C-h f.
 *** Back to Quote
 
 *'rose* is actually *(quote rose)*, but the quote function is used so
-often that it was abbriddged into *'*. However, we've seen above that
+often that it was abridged into *'*. However, we've seen above that
 a normal function was evaluated by Emacs by evaluating all its
 elements from left to right. Here, if Emacs were to evaluate *rose*,
 it would raise an error since *rose* has not yet been associated to a
@@ -712,10 +873,13 @@ The quote function does not accept 2 arguments...
 *** Numbers
 **** Number or Marker
 
-We saw above that *number-or-marker-p* was actually a function that checks whether a given argument is a number or a marker, let's check its definition by using the function *describe-function*:
+We saw above that *number-or-marker-p* was actually a function that
+checks whether a given argument is a number or a marker, let's check
+its definition by using the function *describe-function*:
 
  ELISP> (describe-function 'number-or-marker-p)
- ==========================================================================
+
+====================================================
  number-or-marker-p is a built-in function in ‘src/data.c’.
 
  (number-or-marker-p OBJECT)
@@ -723,7 +887,7 @@ We saw above that *number-or-marker-p* was actually a function that checks wheth
  Return t if OBJECT is a number or a marker.
 
  [back]
- ==========================================================================
+====================================================
 
 We now understand what happens when we ask Emacs to add objects. Once
 Emacs evaluates the first element of the list as being the function
@@ -765,13 +929,14 @@ for which no value has been assigned:
 We already know *+*, but let check its definition:
 
  ELISP> (describe-function '+)
- ==========================================================================
+
+====================================================
  + is a built-in function in ‘C source code’.
 
  (+ &rest NUMBERS-OR-MARKERS)
 
  Return sum of any number of arguments, which are numbers or markers.
-==========================================================================
+=====================================================
 
 *+* is a standard function and &rest is a keyword that indicates that
 any number of argument can follow. The arguments are
@@ -787,7 +952,9 @@ Emacs evaluates the elements one by one, so what we just did is:
         (+ 1 2 3 (+ 4 5 6 (+ 7 8 9) 10) 12)
      => (+ 1 2 3 (+ 4 5 6 *24* 10) 12)
      => (+ 1 2 3 *49* 12)
-     => 67 (#o103, #x43, ?C)**** Some arithmetics
+     => 67 (#o103, #x43, ?C)
+
+**** Some arithmetic
 
 Let's see how Emacs defines a few simple functions. We've seen *+*
 already so let's go straight to *-*.
@@ -795,7 +962,7 @@ already so let's go straight to *-*.
 **** -
  ELISP>  (describe-function '-)
 
-==========================================================================
+====================================================
 - is a built-in function in ‘C source code’.
 
 (- &optional NUMBER-OR-MARKER &rest MORE-NUMBERS-OR-MARKERS)
@@ -803,21 +970,22 @@ already so let's go straight to *-*.
 Negate number or subtract numbers or markers and return the result.
 With one arg, negates it.  With more than one arg,
 subtracts all but the first from the first.
-==========================================================================
+=====================================================
 
 The first argument is optional:
 
  ELISP> (-)
  0 (#o0, #x0, ?\C-@)
 
-Where there is only ne argument it is negated:
+Where there is only one argument it is negated:
 
  ELISP> (- 3)
  -3 (#o377777777777777777775, #x3ffffffffffffffd)
  ELISP> (- -3)
  3 (#o3, #x3, ?\C-c)
 
-When there are 2 ore more arguments, the arguments after the first are all sbtracted from the first:
+When there are 2 or more arguments, the arguments after the first are
+all subtracted from the first:
 
  ELISP> (- 3 2)
  1 (#o1, #x1, ?\C-a)
@@ -827,13 +995,13 @@ When there are 2 ore more arguments, the arguments after the first are all sbtra
 **** *
  ELISP>  (describe-function '*)
 
-==========================================================================
+====================================================
  * is a built-in function in ‘C source code’.
 
 (* &rest NUMBERS-OR-MARKERS)
 
 Return product of any number of arguments, which are numbers or markers.
-==========================================================================
+=====================================================
 
  ELISP> (*)
  1 (#o1, #x1, ?\C-a)
@@ -852,7 +1020,7 @@ And, by the way:
 **** /
  ELISP>  (describe-function '/)
 
-==========================================================================
+====================================================
 / is a built-in function in ‘C source code’.
 
 (/ NUMBER &rest DIVISORS)
@@ -861,7 +1029,7 @@ Divide number by divisors and return the result.
 With two or more arguments, return first argument divided by the rest.
 With one argument, return 1 divided by the argument.
 The arguments must be numbers or markers.
-==========================================================================
+=====================================================
 
 Let's try a few things:
 
@@ -881,7 +1049,8 @@ Division by 0 is not allowed even in elisp.
  ELISP> (/ 2)
  0 (#o0, #x0, ?\C-@)
 
-1 divided by 2 as integers does not result in a floating point value, but in an integer.
+1 divided by 2 as integers does not result in a floating point value,
+but in an integer.
 
  ELISP> (/ 2.0)
  0.5
@@ -895,14 +1064,14 @@ Division by 0 is not allowed even in elisp.
 **** %
  ELISP>  (describe-function '%)
 
-==========================================================================
+====================================================
 % is a built-in function in ‘C source code’.
 
 (% X Y)
 
 Return remainder of X divided by Y.
 Both must be integers or markers.
-==========================================================================
+=====================================================
 
  ELISP> (% 1)
  *** Eval error ***  Wrong number of arguments: %, 1
@@ -917,7 +1086,7 @@ The function requires 2 arguments.
  ELISP> (% 1 0)
  *** Eval error ***  Arithmetic error
 
-Division by 0 is not allowed, thus there are no possibile remainders.
+Division by 0 is not allowed, thus there are no possible remainders.
 
  ELISP> (% 3 5)
  3 (#o3, #x3, ?\C-c)
@@ -932,24 +1101,24 @@ Division by 0 is not allowed, thus there are no possibile remainders.
 **** expt, sqrt
  ELISP>  (describe-function 'expt)
 
-==========================================================================
+====================================================
 expt is a built-in function in ‘src/floatfns.c’.
 
 (expt ARG1 ARG2)
 
 Return the exponential ARG1 ** ARG2.
-==========================================================================
+=====================================================
 
 
  ELISP>  (describe-function 'sqrt)
 
-==========================================================================
+====================================================
 sqrt is a built-in function in ‘src/floatfns.c’.
 
 (sqrt ARG)
 
 Return the square root of ARG.
-==========================================================================
+=====================================================
 
  ELISP> (expt 0 0)
  1 (#o1, #x1, ?\C-a)
@@ -968,7 +1137,7 @@ Return the square root of ARG.
 
  ELISP> (sqrt (expt 2 3))
  2.8284271247461903
-*** TODO Strings (add more string related functions)
+*** TODO Strings (add more string-related functions)
 **** Sending messages
 
 (describe-function 'message)
@@ -980,15 +1149,20 @@ The message also goes into the ‘*Messages*’ buffer, if ‘message-log-max’
 is non-nil.  (In keyboard macros, that’s all it does.)
 Return the message.
 
-FORMAT-STRING is a new type of argument. If you check the Emacs Lisp Reference, you'll see that it's a string that can accept modifications based on special characters that it includes and on the values of ARGS:
+FORMAT-STRING is a new type of argument. If you check the Emacs Lisp
+Reference, you'll see that it's a string that can accept modifications
+based on special characters that it includes and on the values of
+ARGS:
 
  ELISP> (message "I am not yet %d years old." fill-column)
  "I am not yet 70 years old."
 
- ELISP> (message "The octal value of %d is %o, its hexadecimal value is %x and the character it represents is %c." 65 65 65 65)
+ ELISP> (message "The octal value of %d is %o, its hexadecimal value
+ is %x and the character it represents is %c." 65 65 65 65)
 
- "The octal value of 65 is 101, its hexadecimal value is 41 and the character it represents is A."
-*** TODO Buffers (add more buffer related functions)
+ "The octal value of 65 is 101, its hexadecimal value is 41 and the
+ character it represents is A."
+*** TODO Buffers (add buffer-related functions)
 *** TODO General (add more general functions)
 **** Testing types
 Elisp has a lot of types for its arguments. You can check them all in
@@ -1113,7 +1287,8 @@ evaluate it's first argument. As such, it is not a normal
 function. Like *quote*, it is a special form.
 
  ELISP> (set violet "a beautiful flower")
- *** Eval error ***  Wrong type argument: symbolp, "A violet is also a beautiful flower."
+  *** Eval error ***  Wrong type argument: symbolp, "A violet is also a
+beautiful flower."
 
 This would not work, but we knew it.
 
@@ -1601,13 +1776,17 @@ free software license, such as the GNU General Public License,
 to permit their use in free software.
 ** Notes
 *** TODO distinction entre "form" "expression" "symbolic expression" "sexp"
-check definition of sexp/s-expression/symbolic expression/expression/form
-1.3.3 "a lisp expression that you can evaluate is called a form"
-no reference to "symbolic expression"
-sexp appears first in "customization types" 14.4.1
-in emacs manual, definition of sexp appears in 26.4.1
-in ItPiEL, it appears in 1.3
-"The printed representation of both atoms and lists are called symbolic expressions or, more concisely, s-expressions. The word expression by itself can refer to either the printed representation, or to the atom or list as it is held internally in the computer. Often, people use the term expression indiscriminately. (Also, in many texts, the word form is used as a synonym for expression.)"
+check definition of sexp/s-expression/symbolic
+expression/expression/form 1.3.3 "a lisp expression that you can
+evaluate is called a form" no reference to "symbolic expression" sexp
+appears first in "customization types" 14.4.1 in Emacs manual,
+definition of sexp appears in 26.4.1 in ItPiEL, it appears in 1.3 "The
+printed representation of both atoms and lists are called symbolic
+expressions or, more concisely, s-expressions. The word expression by
+itself can refer to either the printed representation, or to the atom
+or list as it is held internally in the computer. Often, people use
+the term expression indiscriminately. (Also, in many texts, the word
+form is used as a synonym for expression.)"
 *** TODO (quote rose) équivalent à 'rose => rose
 *** TODO autres fonctions arithmétiques
 *** TODO introduction à IELM
@@ -1621,7 +1800,7 @@ définition formelle en 12.4
 *** TODO créer ses propres fonctions
 *** TODO définir ses variables
 *** TODO différence entre A et ?A
-*** Introduction à emacs lisp par Aaron Bieber
+*** Introduction à Emacs lisp par Aaron Bieber
 
 *** 2e essai, copié sur ANSI Common Lisp
 
@@ -1642,4 +1821,5 @@ définition formelle en 12.4
 for "symbolic expression" which is also what we've called "expression"
 so far. Just so that you know, we also call such things "forms".
 
-[fn:1] emacs lisp can also be used in Guile (version 2.0 and later) and from the command line as a script language
+[fn:1] Emacs lisp can also be used in Guile (version 2.0 and later)
+and from the command line as a script language
