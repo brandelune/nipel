@@ -182,6 +182,7 @@ need about that key binding.
 While you're at it, try *C-h k* C-h k. You should have a Help buffer
 that displays something like this:
 
+#+begin_example
 ====================================================
 C-h k runs the command describe-key (found in global-map), which is an
 interactive compiled Lisp function in ‘help.el’.
@@ -198,10 +199,12 @@ can be any kind of a key sequence; it can include keyboard events,
 mouse events, and/or menu events.  When calling from a program, pass
 KEY-LIST as a list of elements (SEQ . RAW-SEQ) where SEQ is a
 key-sequence and RAW-SEQ is its untranslated form.
-====================================================
+=====================================================
+#+end_example
 
 And now, try *C-h k* C-x C-e
 
+#+begin_example
 ====================================================
 C-x C-e runs the command eval-last-sexp (found in global-map), which
 is an interactive compiled Lisp function in ‘elisp-mode.el’.
@@ -215,7 +218,8 @@ It is bound to C-x C-e.
 Evaluate sexp before point; print value in the echo area.
 Interactively, with a non ‘-’ prefix argument, print output into
 current buffer.
-====================================================
+=====================================================
+#+end_example
 
 As if that were not enough already, try *C-h k* with all the key
 bindings we've mentioned already.
@@ -854,7 +858,8 @@ opened to display the help message (that's the standard way to display
 a help message). The help buffer has a better format that I'll copy
 here:
 
- ==========================================================================
+#+begin_example
+====================================================
  quote is a special form in ‘C source code’.
 
  (quote ARG)
@@ -869,7 +874,8 @@ here:
  code.
  See the common pitfall in info node ‘(elisp)Rearrangement’ for an
  example of unexpected results when a quoted object is modified.
- ==========================================================================
+====================================================
+#+end_example
 
 The help message says what we've already discovered: *quote* is a
 special form and it takes only one argument (ARG). And what it does is
@@ -879,7 +885,8 @@ bit obscure and you can ignore it for now.
 What about describing the *describe-function* function?
 
  ELISP> (describe-function 'describe-function)
- ==========================================================================
+#+begin_example
+====================================================
  describe-function is an interactive autoloaded compiled Lisp function
  in ‘help-fns.el’.
 
@@ -889,7 +896,8 @@ What about describing the *describe-function* function?
  (describe-function FUNCTION)
 
  Display the full documentation of FUNCTION (a symbol).
- ==========================================================================
+====================================================
+#+end_example
 
 This help message also tells us that the argument is not ARG, as for
 *quote*, but FUNCTION, hinting at the fact that it does not take just
@@ -927,6 +935,7 @@ its definition by using the function *describe-function*:
 
  ELISP> (describe-function 'number-or-marker-p)
 
+#+begin_example
 ====================================================
  number-or-marker-p is a built-in function in ‘src/data.c’.
 
@@ -935,7 +944,8 @@ its definition by using the function *describe-function*:
  Return t if OBJECT is a number or a marker.
 
  [back]
-====================================================
+=====================================================
+#+end_example
 
 We now understand what happens when we ask Emacs to add objects. Once
 Emacs evaluates the first element of the list as being the function
@@ -978,6 +988,7 @@ We already know *+*, but let check its definition:
 
  ELISP> (describe-function '+)
 
+#+begin_example
 ====================================================
  + is a built-in function in ‘C source code’.
 
@@ -985,6 +996,7 @@ We already know *+*, but let check its definition:
 
  Return sum of any number of arguments, which are numbers or markers.
 =====================================================
+#+end_example
 
 *+* is a standard function and &rest is a keyword that indicates that
 any number of argument can follow. The arguments are
@@ -1010,6 +1022,7 @@ already so let's go straight to *-*.
 **** -
  ELISP>  (describe-function '-)
 
+#+begin_example
 ====================================================
 - is a built-in function in ‘C source code’.
 
@@ -1019,6 +1032,7 @@ Negate number or subtract numbers or markers and return the result.
 With one arg, negates it.  With more than one arg,
 subtracts all but the first from the first.
 =====================================================
+#+end_example
 
 The first argument is optional:
 
@@ -1043,6 +1057,7 @@ all subtracted from the first:
 **** *
  ELISP>  (describe-function '*)
 
+#+begin_example
 ====================================================
  * is a built-in function in ‘C source code’.
 
@@ -1050,6 +1065,7 @@ all subtracted from the first:
 
 Return product of any number of arguments, which are numbers or markers.
 =====================================================
+#+end_example
 
  ELISP> (*)
  1 (#o1, #x1, ?\C-a)
@@ -1068,6 +1084,7 @@ And, by the way:
 **** /
  ELISP>  (describe-function '/)
 
+#+begin_example
 ====================================================
 / is a built-in function in ‘C source code’.
 
@@ -1078,6 +1095,7 @@ With two or more arguments, return first argument divided by the rest.
 With one argument, return 1 divided by the argument.
 The arguments must be numbers or markers.
 =====================================================
+#+end_example
 
 Let's try a few things:
 
@@ -1112,6 +1130,7 @@ but in an integer.
 **** %
  ELISP>  (describe-function '%)
 
+#+begin_example
 ====================================================
 % is a built-in function in ‘C source code’.
 
@@ -1120,6 +1139,7 @@ but in an integer.
 Return remainder of X divided by Y.
 Both must be integers or markers.
 =====================================================
+#+end_example
 
  ELISP> (% 1)
  *** Eval error ***  Wrong number of arguments: %, 1
@@ -1149,6 +1169,7 @@ Division by 0 is not allowed, thus there are no possible remainders.
 **** expt, sqrt
  ELISP>  (describe-function 'expt)
 
+#+begin_example
 ====================================================
 expt is a built-in function in ‘src/floatfns.c’.
 
@@ -1156,10 +1177,11 @@ expt is a built-in function in ‘src/floatfns.c’.
 
 Return the exponential ARG1 ** ARG2.
 =====================================================
-
+#+end_example
 
  ELISP>  (describe-function 'sqrt)
 
+#+begin_example
 ====================================================
 sqrt is a built-in function in ‘src/floatfns.c’.
 
@@ -1167,6 +1189,7 @@ sqrt is a built-in function in ‘src/floatfns.c’.
 
 Return the square root of ARG.
 =====================================================
+#+end_example
 
  ELISP> (expt 0 0)
  1 (#o1, #x1, ?\C-a)
