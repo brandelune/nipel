@@ -93,6 +93,8 @@ the cursor was (in my case the cursor was just after the word *cursor*)
 the message will differ but it should look like:
 
 ====================================================
+#+RESULTS
+#+begin_example
 Debugger entered--Lisp error: (void-variable cursor)
   eval(cursor nil)
   elisp--eval-last-sexp(nil)
@@ -100,6 +102,7 @@ Debugger entered--Lisp error: (void-variable cursor)
   funcall-interactively(eval-last-sexp nil)
   call-interactively(eval-last-sexp nil nil)
   command-execute(eval-last-sexp)
+#+end_example
 ====================================================
 
 Don't worry about what that means, just dismiss the message right away
