@@ -31,9 +31,9 @@ If that is not the case, take about 15 minutes to go through the Emacs
 tutorial. If you read this document in Emacs, you can type *C-h t* (the
 *Control* key and the *h* key together, followed by the *t* key) to open the
 tutorial.
-- This introduction also assumes that you have some basic
-computer literacy and know your way around a computer (I assume that
-you would not be using Emacs if that were not the case).
+- This introduction also assumes that you have some basic computer
+  literacy and know your way around a computer (I assume that you
+  would not be using Emacs if that were not the case).
 
 ** Target readership
 - You are interested in knowing more about Emacs, and for that you
@@ -49,7 +49,7 @@ Emacs is written mostly in elisp. Historically, Emacs was conceived as
 a virtual lisp machine[fn:3], editing functions were thus Lisp code editing
 functions.
 
-Emacs extensions (modes, or elisp applications) are written in
+Emacs extensions (modes or elisp applications) are written in
 elisp.
 
 It is possible to write external programs and execute them from
@@ -144,7 +144,7 @@ or something, try to dismiss that with *q*.
 
 If you've messed up things a bit too much to fix all with just *q* and
 *C-g*, like you feel the need to kill buffers or to undo stuff, check
-the Emacs tutorial (*C-h t*), take notes, do you thing and come back.
+the Emacs tutorial (*C-h t*), take notes, do your thing and come back.
 
 *** Documentation and references
 **** The /Help/ system
@@ -343,23 +343,23 @@ commonly by human beings. Emacs supports octal and hexadecimal ways of
 counting too. Also, as far as Emacs is concerned, characters are
 represented by the number that indicates their position in the very
 long list that is the character set internally supported by Emacs. If
-you evaluate a very big number, you'll see that it might not be
+you evaluate a very large number, you'll see that it might not be
 associated anymore to a character.
 
-**** Big(ger) numbers
+**** Large(r) numbers
 For practical purposes, checking the character associated to any
 evaluated number takes time and slows down Emacs, so the default has
-recently be set to only display characters that belong to the ASCII
+recently been set to only display characters that belong to the ASCII
 character set. Which means that from 0 to 31 you'll see weird control
 sequences, from 32 to 47 you'll see punctuation marks and such, from
 48 to 57 you'll see /characters/ "0" to "9", from 58 to 64 you'll see
-other marks, from 65 to 90 you'll see the upper case alphabet, from 91
-to 96 you'll have other marks, from 97 to 122 you'll have the lower
-case alphabet and from 123 to 127, you'll still have various other
-marks. Any number above 127 will only display its octal and
+other marks, from 65 to 90 you'll see the upper-case alphabet, from 91
+to 96 you'll have other marks, from 97 to 122 you'll have the
+lower-case alphabet and from 123 to 127, you'll still have various
+other marks. Any number above 127 will only display its octal and
 hexadecimal values.
 
-Before that setting was instated, the biggest number associated to a
+Before that setting was instated, the largest number associated to a
 character on my machine was 1,114,111, but because of the fonts
 installed on my machine the character was not displayable and I only
 had: "?􏿿 ".
@@ -395,7 +395,7 @@ ELISP> (+ ?私 ?A)
 31234 (#o75002, #x7a02)
 
 Which happens to also be ?稂 (I found that by using C-x 8 RET, which
-is bound to the command "insert-char" that usea a hexadecimal value to
+is bound to the command "insert-char" that uses a hexadecimal value to
 display the associated character, here 7a02.)
 
 **** Other numbers
@@ -429,7 +429,7 @@ no value has been set. Because no value has been set, Emacs stops the
 evaluation and displays an error message.
 
 There are times when we want to use a symbol but we don't want Emacs
-to evaluate it right away, because its value is not yet set for
+to evaluate it right away, because its value is not yet set, for
 example. For this we *quote* it by preceding it with an apostrophe.
 
  ELISP> 'rose
@@ -575,12 +575,12 @@ can't really mean much): depending on the context, a symbol is
 expected to work differently. It can be expected to be a variable or a
 function. This behavior is specific to a few Lisp dialects to which
 elisp belongs. Other Lisps would consider that a symbol can either be
-a function or a variable but not both depending on it's position.
+a function or a variable but not both depending on its position.
 
 By the way, we're trying to find a list that evaluates to 5 here. But
 what if we just needed a list of things that we did not want Emacs to
 evaluate? We could use the quote mechanism that we tested above with
-'rose and Emacs would be fine with that because we're asking it to not
+'rose and Emacs would be fine with that because we're asking it not to
 evaluate the list but just return it as is:
 
  ELISP> '(add 2 and 3)
@@ -588,7 +588,7 @@ evaluate the list but just return it as is:
 
 Now, let's go back to adding up 2 and 3.
 
-In our mathematics classes we did not use "add" to add two numbers, we
+In our mathematics classes, we did not use "add" to add two numbers, we
 used *+*. So let's try that instead:
 
  ELISP> (+ 2 and 3)
@@ -600,7 +600,7 @@ variable with some value attached. But if *and* has got a value, we
 won't be adding only 2 and 3 but 2, the value of *and* and 3, which is
 not what we want.
 
-Back to the math class, we did not use "and" to do our additions did
+Back to the math class, we did not use "and" to do our additions, did
 we? Let's get rid of it too.
 
  ELISP> (+ 2 3)
@@ -765,7 +765,7 @@ directly to see if their evaluation produced something compatible with
 the whole sexp (+ 2 and fill-column) or, in the case of (+ 2 3),
 evaluating each element of sub-sexps to produce an evaluation of that
 specific sub-sexp. Only once Emacs had all the elements evaluated did
-it produces and evaluation of the main sexp:
+it produce an evaluation of the main sexp:
 
 1. (+ 2 fill-column (+ 2 3))
 2. (+ 2 70 5)
@@ -901,7 +901,7 @@ What about describing the *describe-function* function?
 
 This help message also tells us that the argument is not ARG, as for
 *quote*, but FUNCTION, hinting at the fact that it does not take just
-any one argument, but just a function. It is also bound to a number of
+anyone argument, but just a function. It is also bound to a number of
 ways to access it easily, like hitting C-h f.
 
 *** Back to Quote
