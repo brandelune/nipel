@@ -2,6 +2,7 @@
 #+Startup:content
 * Copyright notice:
 Copyright 2017-2020 Jean-Christophe Helary
+
 * License notice:
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -9,6 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A
 copy of the license is included in the section entitled “GNU Free
 Documentation License”.
+
 * A New Introduction to Programming in Emacs Lisp
 ** About this document
 Emacs Lisp (abreviated elisp) is a programming language of the Lisp
@@ -21,6 +23,7 @@ If you have some non-trivial programming experience and want to learn
   just reading code and trying to understand it with the Emacs Lisp
   Reference. You're likely not to be fulfilled by this introduction, but
   if you feel like reading it and correcting mistakes, please do so.
+
 *** TODO add link to the intro
 ** Assumptions
 - This tutorial assumes that you know the basics of navigating Emacs.
@@ -31,6 +34,7 @@ tutorial.
 - This introduction also assumes that you have some basic
 computer literacy and know your way around a computer (I assume that
 you would not be using Emacs if that were not the case).
+
 ** Target readership
 - You are interested in knowing more about Emacs, and for that you
   need to know more about Emacs Lisp.
@@ -38,6 +42,7 @@ you would not be using Emacs if that were not the case).
   an amateur computer user, but you'd like to automate/program things,
   and why not do it in a fun language?
 - You are just curious. I started like this too.
+
 ** Introduction to the environment
 *** Emacs Lisp and Emacs and Lisps
 Emacs is written mostly in elisp. Historically, Emacs was conceived as
