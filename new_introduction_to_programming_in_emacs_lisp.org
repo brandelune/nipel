@@ -339,9 +339,9 @@ expression (that's commonly called a *Read-Evaluate-Print Loop*, or
 You entered 65, and Emacs evaluated that to the value 65 along with
 the other things between parenthesis that are:
 
- #o101 = 65 in octal
- #x41 = 65 in hexadecimal
- ?A = the character A (surprisingly)
+-  #o101 = 65 in octal
+-  #x41 = 65 in hexadecimal
+ - ?A = the character A (surprisingly)
 
 The first 65 is 65 in "decimal", the way numbers are counted the most
 commonly by human beings. Emacs supports octal and hexadecimal ways of
@@ -504,14 +504,20 @@ the evaluated value remained "rose".
 A symbol evaluates to the value it is associated to, a quoted symbol
 evaluates to the symbol, a string evaluates to the same string.
 
+#+begin_example
  ELISP> fill-column
  70 (#o106, #x46, ?F)
+#+end_example
 
+#+begin_example
  ELISP> 'fill-column
  fill-column
+#+end_example
 
+#+begin_example
  ELISP> "fill-column"
  "fill-column"
+#+end_example
 
 *** Lists
 To do interesting things, we need to group atoms and make them work
@@ -693,6 +699,7 @@ sexp at a time, putting two lists on the evaluation line will result
 in an error too.
 
 So, what do we have?
+
  • Numbers are atoms and are sexps.
  • Symbols are atoms and are sexps.
  • Strings are atoms and are sexps.
