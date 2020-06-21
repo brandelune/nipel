@@ -15,7 +15,7 @@ Documentation License”.
 ** About this document
 Emacs Lisp (abreviated elisp) is a programming language of the Lisp
 family and is mostly used within Emacs[fn:1]. This introduction is
-based on Robert J. Chassel's Introduction to Programming in Emacs Lisp
+based on [[info:eintr#Top][Robert J. Chassel's Introduction to Programming in Emacs Lisp]]
 and tries to cover the same ground, but in a different way.
 
 If you have some non-trivial programming experience and want to learn
@@ -24,7 +24,6 @@ If you have some non-trivial programming experience and want to learn
   Reference. You're likely not to be fulfilled by this introduction, but
   if you feel like reading it and correcting mistakes, please do so.
 
-*** TODO add link to the intro
 ** Assumptions
 - This tutorial assumes that you know the basics of navigating Emacs.
 If that is not the case, take about 15 minutes to go through the Emacs
@@ -329,9 +328,9 @@ The result should be displayed immediately under the prompt line:
 #+end_example
 
 **** Read-Evaluate-Print loop = REPL
-What you did is type an *expression* at the prompt, you had Emacs read
-it by hitting Enter, then Emacs evaluated it, printed the evaluation
-result and looped to create a new prompt for you to enter a new
+What you did is type an *expression* at the prompt, you had Emacs *read*
+it by hitting Enter, then Emacs *evaluated* it, *printed* the evaluation
+result and *looped* to create a new prompt for you to enter a new
 expression (that's commonly called a *Read-Evaluate-Print Loop*, or
 /repl/).
 
@@ -339,8 +338,8 @@ expression (that's commonly called a *Read-Evaluate-Print Loop*, or
 You entered 65, and Emacs evaluated that to the value 65 along with
 the other things between parenthesis that are:
 
--  #o101 = 65 in octal
--  #x41 = 65 in hexadecimal
+ - #o101 = 65 in octal
+ - #x41 = 65 in hexadecimal
  - ?A = the character A (surprisingly)
 
 The first 65 is 65 in "decimal", the way numbers are counted the most
@@ -355,14 +354,7 @@ associated anymore to a character.
 For practical purposes, checking the character associated to any
 evaluated number takes time and slows down Emacs, so the default has
 recently been set to only display characters that belong to the ASCII
-character set. Which means that from 0 to 31 you'll see weird control
-sequences, from 32 to 47 you'll see punctuation marks and such, from
-48 to 57 you'll see /characters/ "0" to "9", from 58 to 64 you'll see
-other marks, from 65 to 90 you'll see the upper-case alphabet, from 91
-to 96 you'll have other marks, from 97 to 122 you'll have the
-lower-case alphabet and from 123 to 127, you'll still have various
-other marks. Any number above 127 will only display its octal and
-hexadecimal values.
+character set. Which means that you'll see a third evaluation result starting with a *?* from numbers 0 to 127 and none after.
 
 Before that setting was instated, the largest number associated to a
 character on my machine was 1,114,111, but because of the fonts
@@ -401,6 +393,8 @@ numbers:
 ELISP> ?私
 31169 (#o74701, #x79c1)
 #+end_example
+
+So "I" am not a number is false as far as Emacs is concerned. "I" am number 31169.
 
 And if (+ 2 3) is boring, try:
 
@@ -488,8 +482,10 @@ this sentence), Emacs stops considering it as a symbol that is
 supposed to be associated with a value and evaluates it as a
 string. Something like a message to display to the human reader.
 
+#+begin_example
  ELISP> "rose"
  "rose"
+#+end_example
 
 Any sequence of characters that is between double quotations marks is
 considered as one string and its value is the string itself.
@@ -518,6 +514,9 @@ evaluates to the symbol, a string evaluates to the same string.
  ELISP> "fill-column"
  "fill-column"
 #+end_example
+
+**** 
+
 
 *** Lists
 To do interesting things, we need to group atoms and make them work
